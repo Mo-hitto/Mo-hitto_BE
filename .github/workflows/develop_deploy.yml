@@ -1,7 +1,7 @@
 name: Deploy To EC2
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
 
@@ -71,6 +71,6 @@ jobs:
           script: |
             cd /home/ubuntu/
             docker pull ${{ steps.login-ecr.outputs.registry }}/mohitto-server:latest
-            udo docker-compose up -d --no-deps app
+            sudo docker-compose up -d --no-deps app
             sudo docker-compose logs
             sudo docker image prune -f
