@@ -10,3 +10,10 @@ spring:
     hibernate:
       ddl-auto: create # 배포 환경에서는 update
     show-sql: false
+
+token:
+  jwt:
+    access-key: ${JWT_ACCESS_TOKEN_SECRET}
+    refresh-key: ${JWT_REFRESH_TOKEN_SECRET}
+    access-expired-hours: ${JWT_ACCESS_TOKEN_EXPIRATION_TIME}
+    refresh-expired-hours: ${JWT_REFRESH_TOKEN_EXPIRATION_TIME}
