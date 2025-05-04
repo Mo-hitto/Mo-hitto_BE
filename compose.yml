@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  app:
+    image: 025066274939.dkr.ecr.ap-northeast-2.amazonaws.com/mohitto-server:latest
+    container_name: mohitto-server
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
