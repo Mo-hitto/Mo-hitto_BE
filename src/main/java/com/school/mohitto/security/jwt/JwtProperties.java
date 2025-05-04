@@ -1,6 +1,6 @@
 package com.school.mohitto.security.jwt;
 
-import com.school.mohitto.security.TokenType;
+import com.school.mohitto.domain.authentication.TokenType;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties("token.jwt")
