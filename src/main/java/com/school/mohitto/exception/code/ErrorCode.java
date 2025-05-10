@@ -22,6 +22,8 @@ public enum ErrorCode {
     INVALID_TOKEN_BEARER_TYPE(HttpStatus.UNAUTHORIZED, "Bearer 타입이 아닙니다."),
     TOKEN_EMPTY(HttpStatus.UNAUTHORIZED,"토큰이 비어있습니다."),
 
+    // OAuth2 관련 에러코드
+    UNSUPPORTED_OAUTH2_TYPE(HttpStatus.BAD_REQUEST,"지원하는 OAuth2 타입이 아닙니다."),
 
     ;
 
