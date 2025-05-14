@@ -70,8 +70,8 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/
+            sudo docker image rm ${{ steps.login-ecr.outputs.registry }}/mohitto-server:latest || true
             docker pull ${{ steps.login-ecr.outputs.registry }}/mohitto-server:latest
-            sudo docker-compose pull app
             sudo docker-compose up -d --no-deps app --force-recreate --remove-orphans
             sudo docker-compose logs
             sudo docker image prune -f
