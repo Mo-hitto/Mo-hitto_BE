@@ -17,3 +17,10 @@ token:
     refresh-key: ${JWT_REFRESH_TOKEN_SECRET}
     access-expired-hours: ${JWT_ACCESS_TOKEN_EXPIRATION_TIME}
     refresh-expired-hours: ${JWT_REFRESH_TOKEN_EXPIRATION_TIME}
+
+oauth2:
+  kakao:
+    client_id: ${KAKAO_CLIENT_ID}
+    client_secret: ${KAKAO_CLIENT_SECRET}
+    redirect_uri: ${KAKAO_REDIRECT_URI}
+    scope: ${KAKAO_SCOPE}

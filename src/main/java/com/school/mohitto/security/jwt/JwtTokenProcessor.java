@@ -23,7 +23,7 @@ import java.util.Optional;
 public class JwtTokenProcessor implements TokenProcessor {
 
     private static final String TOKEN_PREFIX = "Bearer ";
-    final JwtProperties jwtProperties;
+    private final JwtProperties jwtProperties;
 
     @Override
     public String encode(
