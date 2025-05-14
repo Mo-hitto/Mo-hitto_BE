@@ -41,13 +41,13 @@ jobs:
       - name: Docker 이미지 ECR에 Push
         run: docker push ${{ steps.login-ecr.outputs.registry }}/mohitto-server:latest
 
-      - name: compose.yml 파일 EC2로 복사
+      - name: docker-compose.yml 파일 EC2로 복사
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          source: compose.yml
+          source: docker-compose.yml
           target: /home/ubuntu/
 
       - name: .env 파일 EC2에 동적 생성 (Secrets에서 가져옴)
@@ -70,7 +70,9 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/
+            sudo docker rm -f mohitto-server || true
+            sudo docker rmi ${{ steps.login-ecr.outputs.registry }}/mohitto-server:latest || true
             docker pull ${{ steps.login-ecr.outputs.registry }}/mohitto-server:latest
-            sudo docker-compose up -d --no-deps app
+            sudo docker-compose up -d --no-deps --force-recreate --remove-orphans app
             sudo docker-compose logs
             sudo docker image prune -f
