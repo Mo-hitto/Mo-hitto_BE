@@ -12,6 +12,6 @@ public class HealthController {
     @Operation(summary = "애플리케이션 헬스 체크", description = "서버 상태를 확인하고 정상 동작 여부를 확인하는 API")
     @GetMapping("/health_check")
     public String healthCheck() {
-        return "good";
+        return "good check2";
     }
 }
