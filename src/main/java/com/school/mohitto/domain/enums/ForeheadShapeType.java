@@ -1,5 +1,8 @@
 package com.school.mohitto.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ForeheadShapeType {
     ROUND("round"),
     SQUARE("square"),
@@ -13,7 +16,4 @@ public enum ForeheadShapeType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

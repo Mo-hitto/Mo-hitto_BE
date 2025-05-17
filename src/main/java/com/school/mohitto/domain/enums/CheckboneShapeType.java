@@ -1,5 +1,8 @@
 package com.school.mohitto.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum CheckboneShapeType {
     HIGH("high"),
     MEDIUM("medium"),
@@ -13,7 +16,4 @@ public enum CheckboneShapeType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

@@ -1,25 +1,18 @@
 package com.school.mohitto.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum HairTypeEnum {
-    STRAIGHT("straight", "직모"),
-    COILY("coily", "심한 곱슬"),
-    CURLY("curly", "곱슬");
+    STRAIGHT("straight"),
+    COILY("coily"),
+    CURLY("curly");
 
-    private final String code;
-    private final String description;
+    private final String value;
 
 
-    HairTypeEnum(String code, String description) {
-        this.code = code;
-        this.description = description;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public String getDescription() {
-        return description;
+    HairTypeEnum(String value) {
+        this.value = value;
     }
 
 }

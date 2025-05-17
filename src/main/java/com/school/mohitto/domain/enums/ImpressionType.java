@@ -1,5 +1,8 @@
 package com.school.mohitto.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum ImpressionType {
 
     SHARP("sharp"),
@@ -12,7 +15,4 @@ public enum ImpressionType {
         this.value = value;
     }
 
-    public String getValue() {
-        return value;
-    }
 }

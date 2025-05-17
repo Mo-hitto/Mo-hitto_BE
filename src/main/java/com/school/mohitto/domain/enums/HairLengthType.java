@@ -1,5 +1,8 @@
 package com.school.mohitto.domain.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum HairLengthType {
     SHORT("short"),
     MEDIUM("medium"),
@@ -10,9 +13,5 @@ public enum HairLengthType {
 
     HairLengthType(String value) {
         this.value = value;
-    }
-
-    public String getValue() {
-        return value;
     }
 }
