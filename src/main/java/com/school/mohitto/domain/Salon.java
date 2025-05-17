@@ -26,8 +26,8 @@ public class Salon {
     @Column(name = "introduction", columnDefinition = "TEXT")
     private String introduction;
 
-    @Column(name = "spec&address", length = 200)
-    private String specialAddress;
+    @Column(name = "address", length = 200)
+    private String Address;
 
     // 연관관계
     @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL)

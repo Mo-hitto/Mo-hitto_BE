@@ -25,6 +25,6 @@ public class DiagnosisForeheadShape {
 
     // 이마 모양과의 연관관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "이마id")
+    @JoinColumn(name = "foreheadshape_id")
     private ForeheadShape foreheadShape;
 }

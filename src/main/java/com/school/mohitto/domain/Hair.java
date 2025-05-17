@@ -20,7 +20,7 @@ public class Hair {
     @Column(name = "hair_id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "name", length = 20)
     private String name;
 
     @Column(name = "explanation")

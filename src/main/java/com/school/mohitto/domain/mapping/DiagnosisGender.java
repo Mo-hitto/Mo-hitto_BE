@@ -24,10 +24,6 @@ public class DiagnosisGender {
     @JoinColumn(name = "diagnosis_id")
     private Diagnosis diagnosis;
 
-    // 사용자와의 연관관계
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
 
     // 성별과의 연관관계
     @ManyToOne(fetch = FetchType.LAZY)

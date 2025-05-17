@@ -20,7 +20,7 @@ public class DiagnosisCheckboneShape extends BaseTimeEntity {
     private Long id;
 
     // 진단과의 연관관계
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnosis_id")
     private Diagnosis diagnosis;
 

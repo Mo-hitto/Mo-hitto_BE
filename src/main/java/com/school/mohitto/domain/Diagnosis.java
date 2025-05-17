@@ -48,4 +48,7 @@ public class Diagnosis extends BaseTimeEntity{
     // 업로드 이미지와의 연관관계 (추가됨)
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UploadImage> uploadImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CreatedImage> createdImages = new ArrayList<>();
 }
