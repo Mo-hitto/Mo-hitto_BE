@@ -27,5 +27,5 @@ oauth2:
   kakao:
     client-id: ${KAKAO_CLIENT_ID}
     client-secret: ${KAKAO_CLIENT_SECRET}
-    redirect-uri: http://localhost:8080/oauth/kakao/callback
+    redirect-uri: http://localhost:8080/oauth2/kakao/callback
     scope: ${KAKAO_SCOPE}
