@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @Table(name = "upload_images")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class UploadImage {
+public class UploadImage extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Image_id")
+    @Column(name = "image_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -21,5 +21,12 @@ public class UploadImage {
     private Diagnosis diagnosis;
 
     @Column(name = "url", length = 255)
-    private String uploadImageUrl;
+    private String imageUrl;
+
+    public static UploadImage of(Diagnosis diagnosis, String imageUrl) {
+        UploadImage image = new UploadImage();
+        image.diagnosis = diagnosis;
+        image.imageUrl = imageUrl;
+        return image;
+    }
 }
