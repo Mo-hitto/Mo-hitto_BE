@@ -2,7 +2,10 @@ package com.school.mohitto.service.authentication;
 
 import com.school.mohitto.domain.User;
 import com.school.mohitto.domain.authentication.*;
+import com.school.mohitto.exception.CustomException;
+import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.repository.UserRepository;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,6 +56,19 @@ public class AuthenticationService {
 
             return userRepository.save(newUser);
         });
+    }
+
+    public PrivateClaims getValidPrivateClaims(TokenType tokenType, String token) {
+        Claims claims = tokenProcessor.decode(tokenType, token)
+                .orElseThrow(() -> new CustomException(ErrorCode.INVALID_TOKEN));
+        PrivateClaims privateClaims = PrivateClaims.from(claims);
+
+        Long userId = privateClaims.userId();
+        if (!userRepository.existsById(userId)) {
+            throw new CustomException(ErrorCode.UNDEFINED_USER_TOKEN);
+        }
+
+        return privateClaims;
     }
 
 }
