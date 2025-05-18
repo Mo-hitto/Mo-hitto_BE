@@ -5,6 +5,7 @@ import com.school.mohitto.domain.authentication.*;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.domain.authentication.dto.LoginResult;
+import com.school.mohitto.repository.BlackListTokenRepository;
 import com.school.mohitto.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class AuthenticationService {
     private final OAuth2HandlerProvider oAuth2HandlerProvider;
     private final TokenProcessor tokenProcessor;
     private final UserRepository userRepository;
+    private final BlackListTokenRepository blackListTokenRepository;
 
     public String getAuthCodeRequestUrl(String oauth2TypeName) {
         final OAuth2Handler oauth2Handler = oAuth2HandlerProvider.findHandler(oauth2TypeName);
@@ -71,5 +73,23 @@ public class AuthenticationService {
 
         return privateClaims;
     }
+
+    public void logout(String accessToken, String refreshToken) {
+        PrivateClaims privateClaims = getValidPrivateClaims(TokenType.ACCESS, accessToken);
+        BlackListToken blacklistAccessToken = new BlackListToken(
+                privateClaims.userId(),
+                TokenType.ACCESS,
+                accessToken
+        );
+        BlackListToken blacklistRefreshToken = new BlackListToken(
+                privateClaims.userId(),
+                TokenType.REFRESH,
+                refreshToken
+        );
+
+        blackListTokenRepository.save(blacklistAccessToken);
+        blackListTokenRepository.save(blacklistRefreshToken);
+    }
+
 
 }

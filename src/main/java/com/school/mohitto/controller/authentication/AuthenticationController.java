@@ -1,13 +1,18 @@
 package com.school.mohitto.controller.authentication;
 
+import com.school.mohitto.config.SwaggerConfig;
 import com.school.mohitto.domain.authentication.dto.LoginResult;
 import com.school.mohitto.domain.authentication.dto.LoginWithAuthorizationCodeRequest;
+import com.school.mohitto.domain.authentication.dto.LogoutRequest;
 import com.school.mohitto.service.authentication.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,5 +72,24 @@ public class AuthenticationController {
         );
 
         return loginResult;
+    }
+
+    @PostMapping("/logout")
+    @Operation(
+            summary = "로그아웃",
+            description = "로그아웃합니다.",
+            security = @SecurityRequirement(name = SwaggerConfig.SERVICE_SECURITY_SCHEME_NAME)
+    )
+    @ApiResponse(responseCode = "204", description = "로그아웃 성공")
+    public ResponseEntity<Void> logout(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken,
+            @RequestBody @Valid LogoutRequest request
+    ) {
+
+
+        authenticationService.logout(accessToken, request.refreshToken());
+
+        return ResponseEntity.noContent()
+                .build();
     }
 }
