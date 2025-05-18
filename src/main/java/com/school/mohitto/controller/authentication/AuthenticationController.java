@@ -1,9 +1,11 @@
 package com.school.mohitto.controller.authentication;
 
 import com.school.mohitto.config.SwaggerConfig;
+import com.school.mohitto.domain.authentication.TokenType;
 import com.school.mohitto.domain.authentication.dto.LoginResult;
 import com.school.mohitto.domain.authentication.dto.LoginWithAuthorizationCodeRequest;
 import com.school.mohitto.domain.authentication.dto.LogoutRequest;
+import com.school.mohitto.domain.authentication.dto.ValidateTokenResponse;
 import com.school.mohitto.service.authentication.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -35,6 +37,7 @@ public class AuthenticationController {
                      로그인 이후 redirect 되는 url의 `code` query parameter에 Authorization code가 포함되어 있습니다.
                      """
     )
+    @ApiResponse(responseCode = "302", description = "OAuth 2.0 로그인 페이지로 redirect 성공")
     public ResponseEntity<Void> redirectAuthCodeRequestUrl(
             @Parameter(description = "OAuth 2.0 Type (대소문자 상관 없음)", example = "KAKAO")
             @PathVariable String oauth2Type
@@ -60,6 +63,7 @@ public class AuthenticationController {
             summary = "OAuth 2.0 로그인",
             description = "OAuth 2.0 Authorization code를 통해 로그인합니다."
     )
+    @ApiResponse(responseCode = "200", description = "로그인 성공")
     public LoginResult loginWithAuthorizationCode(
             @Parameter(description = "OAuth 2.0 Type (대소문자 상관 없음)", example = "KAKAO")
             @PathVariable String oauth2Type,
@@ -91,5 +95,21 @@ public class AuthenticationController {
 
         return ResponseEntity.noContent()
                 .build();
+    }
+
+    @GetMapping("/validate-token")
+    @Operation(
+            summary = "Access Token 유효성 검사",
+            description = "Access Token의 유효성을 검사합니다.",
+            security = @SecurityRequirement(name = SwaggerConfig.SERVICE_SECURITY_SCHEME_NAME)
+    )
+    @ApiResponse(responseCode = "200", description = "Access Token 유효성 검사 성공")
+    public ValidateTokenResponse validateToken(
+            @RequestHeader(HttpHeaders.AUTHORIZATION) String accessToken
+    ) {
+        boolean validated = authenticationService.isValidToken(TokenType.ACCESS, accessToken);
+        ValidateTokenResponse validateTokenResponse = new ValidateTokenResponse(validated);
+
+        return validateTokenResponse;
     }
 }

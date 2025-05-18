@@ -95,5 +95,16 @@ public class AuthenticationService {
         blackListTokenRepository.save(blacklistRefreshToken);
     }
 
+    public boolean isValidToken(TokenType tokenType, String targetToken) {
+        PrivateClaims privateClaims = tokenProcessor.decode(tokenType, targetToken)
+                .map(PrivateClaims::from)
+                .orElse(null);
+        if (privateClaims == null) {
+            return false;
+        }
+
+        return userRepository.existsById(privateClaims.userId()) &&
+                !blackListTokenRepository.existsByUserIdAndToken(privateClaims.userId(), targetToken);
+    }
 
 }
