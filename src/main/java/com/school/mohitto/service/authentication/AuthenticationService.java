@@ -73,7 +73,7 @@ public class AuthenticationService {
         }
 
         if (blackListTokenRepository.existsByUserIdAndToken(userId, token)) {
-            throw new CustomException(ErrorCode.INVALID_TOKEN_ALREADY_LOGOUT);
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
 
         return privateClaims;
