@@ -19,12 +19,16 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR,  "서버 에러, 관리자에게 문의 바랍니다."),
 
     // JWT 토큰 에러코드
+    INVALID_TOKEN(HttpStatus.BAD_REQUEST, "유효한 토큰이 아닙니다."),
     INVALID_TOKEN_BEARER_TYPE(HttpStatus.UNAUTHORIZED, "Bearer 타입이 아닙니다."),
     TOKEN_EMPTY(HttpStatus.UNAUTHORIZED,"토큰이 비어있습니다."),
+    UNDEFINED_USER_TOKEN(HttpStatus.BAD_REQUEST,"존재하지 않는 유저의 토큰입니다."),
 
     // OAuth2 관련 에러코드
     UNSUPPORTED_OAUTH2_TYPE(HttpStatus.BAD_REQUEST,"지원하는 OAuth2 타입이 아닙니다."),
 
+    // Security 관련 에러코드
+    LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED,"로그인이 필요한 기능입니다."),
     ;
 
     private final HttpStatus status;
