@@ -1,5 +1,6 @@
 package com.school.mohitto.domain.mapping;
 
+import com.school.mohitto.domain.BaseTimeEntity;
 import com.school.mohitto.domain.Diagnosis;
 import com.school.mohitto.domain.Gender;
 import com.school.mohitto.domain.User;
@@ -12,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "D_gender")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DiagnosisGender {
+public class DiagnosisGender extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +30,15 @@ public class DiagnosisGender {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gender_id")
     private Gender gender;
+
+    public static DiagnosisGender of(Diagnosis diagnosis, Gender gender) {
+        DiagnosisGender dg = new DiagnosisGender();
+        dg.diagnosis = diagnosis;
+        dg.gender = gender;
+        return dg;
+    }
+
+    public void setDiagnosis(Diagnosis diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 }

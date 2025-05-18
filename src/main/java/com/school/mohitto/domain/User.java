@@ -40,7 +40,7 @@ public class User {
     private List<UserHair> userHairs = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Diagnosis> diagnoses = new ArrayList<>();
+    private List<Diagnosis> diagnosis = new ArrayList<>();
 
     // 저장된 미용실 추가
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)

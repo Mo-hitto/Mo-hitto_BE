@@ -17,7 +17,7 @@ import java.util.List;
 public class Gender {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "gender_id")
     private Long id;
 
     @Column(name = "gendertype", nullable = false)

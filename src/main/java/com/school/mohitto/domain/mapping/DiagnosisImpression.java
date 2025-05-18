@@ -1,5 +1,6 @@
 package com.school.mohitto.domain.mapping;
 
+import com.school.mohitto.domain.BaseTimeEntity;
 import com.school.mohitto.domain.Diagnosis;
 import com.school.mohitto.domain.Impression;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "D_impression")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DiagnosisImpression {
+public class DiagnosisImpression extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +28,19 @@ public class DiagnosisImpression {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "impression_id")
     private Impression impression;
+
+    public static DiagnosisImpression of(Diagnosis diagnosis, Impression impression) {
+        DiagnosisImpression di = new DiagnosisImpression();
+        di.setDiagnosis(diagnosis);
+        di.setImpression(impression);
+        return di;
+    }
+
+    public void setDiagnosis(Diagnosis diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public void setImpression(Impression impression) {
+        this.impression = impression;
+    }
 }
