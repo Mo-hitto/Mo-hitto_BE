@@ -29,6 +29,19 @@ public enum ErrorCode {
 
     // Security 관련 에러코드
     LOGIN_REQUIRED(HttpStatus.UNAUTHORIZED,"로그인이 필요한 기능입니다."),
+
+    // 진단 에러코드
+    DIAGNOSIS_NOT_FOUND(HttpStatus.NOT_FOUND, "진단 정보를 찾을 수 없습니다."),
+    USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "유저 정보를 찾을 수 없습니다."),
+    GENDER_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 성별 ID입니다."),
+    HAIR_TYPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 모발 형태 ID입니다."),
+    HAIR_LENGTH_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 기장 ID입니다."),
+    FOREHEAD_SHAPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 이마 형태 ID입니다."),
+    CHECKBONE_SHAPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 광대 형태 ID입니다."),
+
+    // image 저장 관련 에러
+    FILE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST,  "잘못된 요청입니다.")
+
     ;
 
     private final HttpStatus status;
