@@ -5,14 +5,14 @@ import lombok.Getter;
 
 @Getter
 public enum HairDifficultyType {
-    EASY("쉬움"),
-    MEDIUM("보통"),
-    HARD("어려움");
+    EASY("easy"),
+    MEDIUM("medium"),
+    HARD("hard");
 
-    private final String label;
+    private final String value;
 
-    HairDifficultyType(String label) {
-        this.label = label;
+    HairDifficultyType(String value) {
+        this.value = value;
     }
 }
 
