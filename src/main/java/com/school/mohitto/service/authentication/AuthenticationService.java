@@ -2,6 +2,7 @@ package com.school.mohitto.service.authentication;
 
 import com.school.mohitto.domain.User;
 import com.school.mohitto.domain.authentication.*;
+import com.school.mohitto.domain.authentication.dto.TokenRefreshResult;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.domain.authentication.dto.LoginResult;
@@ -107,4 +108,17 @@ public class AuthenticationService {
                 !blackListTokenRepository.existsByUserIdAndToken(privateClaims.userId(), targetToken);
     }
 
+    public TokenRefreshResult refreshToken(LocalDateTime requestTime, String refreshToken) {
+        PrivateClaims privateClaims = getValidPrivateClaims(TokenType.REFRESH, refreshToken);
+        Token token = tokenProcessor.generateToken(requestTime, privateClaims.toMap());
+
+        BlackListToken blacklistRefreshToken = new BlackListToken(
+                privateClaims.userId(),
+                TokenType.REFRESH,
+                refreshToken
+        );
+        blackListTokenRepository.save(blacklistRefreshToken);
+
+        return new TokenRefreshResult(token.accessToken(), token.refreshToken());
+    }
 }

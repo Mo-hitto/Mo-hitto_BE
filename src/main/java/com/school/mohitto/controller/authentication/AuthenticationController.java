@@ -2,10 +2,7 @@ package com.school.mohitto.controller.authentication;
 
 import com.school.mohitto.config.SwaggerConfig;
 import com.school.mohitto.domain.authentication.TokenType;
-import com.school.mohitto.domain.authentication.dto.LoginResult;
-import com.school.mohitto.domain.authentication.dto.LoginWithAuthorizationCodeRequest;
-import com.school.mohitto.domain.authentication.dto.LogoutRequest;
-import com.school.mohitto.domain.authentication.dto.ValidateTokenResponse;
+import com.school.mohitto.domain.authentication.dto.*;
 import com.school.mohitto.service.authentication.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -111,5 +108,20 @@ public class AuthenticationController {
         ValidateTokenResponse validateTokenResponse = new ValidateTokenResponse(validated);
 
         return validateTokenResponse;
+    }
+
+    @PostMapping("/refresh-token")
+    @Operation(
+            summary = "새 토큰 발급",
+            description = "Refresh Token으로 새로운 Access Token과 Refresh Token을 발급합니다."
+    )
+    @ApiResponse(responseCode = "200", description = "새 토큰 발급 성공")
+    public ResponseEntity<TokenRefreshResponse> refreshToken(
+            @RequestBody @Valid TokenRefreshRequest request
+    ) {
+        TokenRefreshResult result = authenticationService.refreshToken(LocalDateTime.now(), request.refreshToken());
+        TokenRefreshResponse response = TokenRefreshResponse.from(result);
+
+        return ResponseEntity.ok(response);
     }
 }
