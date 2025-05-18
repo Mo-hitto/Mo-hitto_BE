@@ -71,6 +71,10 @@ public class AuthenticationService {
             throw new CustomException(ErrorCode.UNDEFINED_USER_TOKEN);
         }
 
+        if (blackListTokenRepository.existsByUserIdAndToken(userId, token)) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN_ALREADY_LOGOUT);
+        }
+
         return privateClaims;
     }
 
