@@ -1,4 +1,4 @@
-package com.school.mohitto.domain.authentication;
+package com.school.mohitto.domain.authentication.dto;
 
 public record LoginResult (
         Long id,

@@ -2,6 +2,7 @@ package com.school.mohitto.service.authentication;
 
 import com.school.mohitto.domain.User;
 import com.school.mohitto.domain.authentication.*;
+import com.school.mohitto.domain.authentication.dto.LoginResult;
 import com.school.mohitto.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

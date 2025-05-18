@@ -1,7 +1,7 @@
 package com.school.mohitto.controller.authentication;
 
-import com.school.mohitto.domain.authentication.LoginResult;
-import com.school.mohitto.domain.authentication.LoginWithAuthorizationCodeRequest;
+import com.school.mohitto.domain.authentication.dto.LoginResult;
+import com.school.mohitto.domain.authentication.dto.LoginWithAuthorizationCodeRequest;
 import com.school.mohitto.service.authentication.AuthenticationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
