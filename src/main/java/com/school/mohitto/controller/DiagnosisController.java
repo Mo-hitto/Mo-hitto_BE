@@ -6,7 +6,6 @@ import com.school.mohitto.dto.requestDTO.BasicDiagnosisRequest;
 import com.school.mohitto.dto.requestDTO.PreferenceDiagnosisRequest;
 import com.school.mohitto.dto.responseDTO.DiagnosisCreateResponse;
 import com.school.mohitto.dto.responseDTO.DiagnosisPreferenceResponse;
-import com.school.mohitto.dto.responseDTO.UploadImageResponse;
 import com.school.mohitto.exception.dto.ErrorResponse;
 import com.school.mohitto.security.annotation.AuthUser;
 import com.school.mohitto.service.DiagnosisService;
@@ -21,7 +20,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/diagnosis")

@@ -1,13 +1,11 @@
 package com.school.mohitto.service;
 
-import com.school.mohitto.Image.FileUploader;
 import com.school.mohitto.domain.*;
 import com.school.mohitto.domain.mapping.*;
 import com.school.mohitto.dto.requestDTO.BasicDiagnosisRequest;
 import com.school.mohitto.dto.requestDTO.PreferenceDiagnosisRequest;
 import com.school.mohitto.dto.responseDTO.DiagnosisCreateResponse;
 import com.school.mohitto.dto.responseDTO.DiagnosisPreferenceResponse;
-import com.school.mohitto.dto.responseDTO.UploadImageResponse;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.repository.*;
@@ -15,7 +13,6 @@ import com.school.mohitto.repository.DiagnosisRepositorys.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
