@@ -20,6 +20,7 @@ public enum ErrorCode {
 
     // JWT 토큰 에러코드
     INVALID_TOKEN(HttpStatus.BAD_REQUEST, "유효한 토큰이 아닙니다."),
+    INVALID_TOKEN_ALREADY_LOGOUT(HttpStatus.BAD_REQUEST,"로그아웃되었습니다."),
     INVALID_TOKEN_BEARER_TYPE(HttpStatus.UNAUTHORIZED, "Bearer 타입이 아닙니다."),
     TOKEN_EMPTY(HttpStatus.UNAUTHORIZED,"토큰이 비어있습니다."),
     UNDEFINED_USER_TOKEN(HttpStatus.BAD_REQUEST,"존재하지 않는 유저의 토큰입니다."),

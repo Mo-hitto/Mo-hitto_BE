@@ -2,8 +2,11 @@ package com.school.mohitto.service.authentication;
 
 import com.school.mohitto.domain.User;
 import com.school.mohitto.domain.authentication.*;
+import com.school.mohitto.domain.authentication.dto.TokenRefreshResult;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
+import com.school.mohitto.domain.authentication.dto.LoginResult;
+import com.school.mohitto.repository.BlackListTokenRepository;
 import com.school.mohitto.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ public class AuthenticationService {
     private final OAuth2HandlerProvider oAuth2HandlerProvider;
     private final TokenProcessor tokenProcessor;
     private final UserRepository userRepository;
+    private final BlackListTokenRepository blackListTokenRepository;
 
     public String getAuthCodeRequestUrl(String oauth2TypeName) {
         final OAuth2Handler oauth2Handler = oAuth2HandlerProvider.findHandler(oauth2TypeName);
@@ -68,7 +72,53 @@ public class AuthenticationService {
             throw new CustomException(ErrorCode.UNDEFINED_USER_TOKEN);
         }
 
+        if (blackListTokenRepository.existsByUserIdAndToken(userId, token)) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+
         return privateClaims;
     }
 
+    public void logout(String accessToken, String refreshToken) {
+        PrivateClaims privateClaims = getValidPrivateClaims(TokenType.ACCESS, accessToken);
+        BlackListToken blacklistAccessToken = new BlackListToken(
+                privateClaims.userId(),
+                TokenType.ACCESS,
+                accessToken
+        );
+        BlackListToken blacklistRefreshToken = new BlackListToken(
+                privateClaims.userId(),
+                TokenType.REFRESH,
+                refreshToken
+        );
+
+        blackListTokenRepository.save(blacklistAccessToken);
+        blackListTokenRepository.save(blacklistRefreshToken);
+    }
+
+    public boolean isValidToken(TokenType tokenType, String targetToken) {
+        PrivateClaims privateClaims = tokenProcessor.decode(tokenType, targetToken)
+                .map(PrivateClaims::from)
+                .orElse(null);
+        if (privateClaims == null) {
+            return false;
+        }
+
+        return userRepository.existsById(privateClaims.userId()) &&
+                !blackListTokenRepository.existsByUserIdAndToken(privateClaims.userId(), targetToken);
+    }
+
+    public TokenRefreshResult refreshToken(LocalDateTime requestTime, String refreshToken) {
+        PrivateClaims privateClaims = getValidPrivateClaims(TokenType.REFRESH, refreshToken);
+        Token token = tokenProcessor.generateToken(requestTime, privateClaims.toMap());
+
+        BlackListToken blacklistRefreshToken = new BlackListToken(
+                privateClaims.userId(),
+                TokenType.REFRESH,
+                refreshToken
+        );
+        blackListTokenRepository.save(blacklistRefreshToken);
+
+        return new TokenRefreshResult(token.accessToken(), token.refreshToken());
+    }
 }
