@@ -116,12 +116,12 @@ public class AuthenticationController {
             description = "Refresh Token으로 새로운 Access Token과 Refresh Token을 발급합니다."
     )
     @ApiResponse(responseCode = "200", description = "새 토큰 발급 성공")
-    public ResponseEntity<TokenRefreshResponse> refreshToken(
+    public TokenRefreshResponse refreshToken(
             @RequestBody @Valid TokenRefreshRequest request
     ) {
-        TokenRefreshResult result = authenticationService.refreshToken(LocalDateTime.now(), request.refreshToken());
-        TokenRefreshResponse response = TokenRefreshResponse.from(result);
+        TokenRefreshResult tokenRefreshResult = authenticationService.refreshToken(LocalDateTime.now(), request.refreshToken());
+        TokenRefreshResponse tokenRefreshResponse = TokenRefreshResponse.from(tokenRefreshResult);
 
-        return ResponseEntity.ok(response);
+        return tokenRefreshResponse;
     }
 }
