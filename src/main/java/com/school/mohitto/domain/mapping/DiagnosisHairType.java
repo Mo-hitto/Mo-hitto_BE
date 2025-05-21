@@ -1,5 +1,6 @@
 package com.school.mohitto.domain.mapping;
 
+import com.school.mohitto.domain.BaseTimeEntity;
 import com.school.mohitto.domain.Diagnosis;
 import com.school.mohitto.domain.HairType;
 import jakarta.persistence.*;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "D_hairtype")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DiagnosisHairType {
+public class DiagnosisHairType extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +28,15 @@ public class DiagnosisHairType {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hairtype_id")
     private HairType hairType;
+
+    public static DiagnosisHairType of(Diagnosis diagnosis, HairType hairType) {
+        DiagnosisHairType dht = new DiagnosisHairType();
+        dht.diagnosis = diagnosis;
+        dht.hairType = hairType;
+        return dht;
+    }
+
+    public void setDiagnosis(Diagnosis diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 }

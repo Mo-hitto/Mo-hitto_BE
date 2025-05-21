@@ -28,4 +28,16 @@ public class DiagnosisCheckboneShape extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "checkboneshape_id")
     private CheckboneShape checkboneShape;
+
+    public static DiagnosisCheckboneShape of(Diagnosis diagnosis, CheckboneShape checkboneShape) {
+        DiagnosisCheckboneShape dcs = new DiagnosisCheckboneShape();
+        dcs.diagnosis = diagnosis;
+        dcs.checkboneShape = checkboneShape;
+        return dcs;
+    }
+
+    public void setDiagnosis(Diagnosis diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
 }

@@ -42,13 +42,63 @@ public class Diagnosis extends BaseTimeEntity{
     @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private DiagnosisCheckboneShape diagnosisCheckboneShape;
 
+    @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DiagnosisHairDifficulty diagnosisHairDifficulty;
+
+    @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private UploadImage uploadImage;
+
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiagnosisImpression> diagnosisImpressions = new ArrayList<>();
 
-    // 업로드 이미지와의 연관관계 (추가됨)
-    @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UploadImage> uploadImages = new ArrayList<>();
 
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CreatedImage> createdImages = new ArrayList<>();
+
+    public static Diagnosis create(User user) {
+        Diagnosis diagnosis = new Diagnosis();
+        diagnosis.user = user;
+        return diagnosis;
+    }
+
+    public void addDiagnosisGender(DiagnosisGender diagnosisGender) {
+        this.diagnosisGender = diagnosisGender;
+        diagnosisGender.setDiagnosis(this);
+    }
+
+    public void addDiagnosisHairType(DiagnosisHairType diagnosisHairType) {
+        this.diagnosisHairType = diagnosisHairType;
+        diagnosisHairType.setDiagnosis(this);
+    }
+
+    public void addDiagnosisHairLength(DiagnosisHairLength diagnosisHairLength) {
+        this.diagnosisHairLength = diagnosisHairLength;
+        diagnosisHairLength.setDiagnosis(this);
+    }
+
+    public void addDiagnosisForeheadShape(DiagnosisForeheadShape diagnosisForeheadShape) {
+        this.diagnosisForeheadShape = diagnosisForeheadShape;
+        diagnosisForeheadShape.setDiagnosis(this);
+    }
+
+    public void addDiagnosisCheckboneShape(DiagnosisCheckboneShape diagnosisCheckboneShape) {
+        this.diagnosisCheckboneShape = diagnosisCheckboneShape;
+        diagnosisCheckboneShape.setDiagnosis(this);
+    }
+
+    public void addDiagnosisHairDifficulty(DiagnosisHairDifficulty diagnosisHairDifficulty) {
+        this.diagnosisHairDifficulty = diagnosisHairDifficulty;
+        diagnosisHairDifficulty.setDiagnosis(this);
+    }
+
+    public void addDiagnosisImpression(DiagnosisImpression diagnosisImpression) {
+        this.diagnosisImpressions.add(diagnosisImpression);
+        diagnosisImpression.setDiagnosis(this);
+    }
+
+
+
+
+
+
 }
