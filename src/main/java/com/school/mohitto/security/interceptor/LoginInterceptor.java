@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -23,6 +24,10 @@ public class LoginInterceptor implements HandlerInterceptor {
             HttpServletResponse response,
             Object handler
     ) {
+        if (isPreflightRequest(request)) {
+            return true;
+        }
+
         String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
         if (accessToken == null || accessToken.isEmpty()) {
             throw new CustomException(ErrorCode.LOGIN_REQUIRED);
@@ -31,5 +36,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         authenticationService.getValidPrivateClaims(TokenType.ACCESS, accessToken);
 
         return true;
+    }
+
+    private boolean isPreflightRequest(HttpServletRequest request) {
+        return request.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS.name()) &&
+                request.getHeader(HttpHeaders.ACCESS_CONTROL_REQUEST_METHOD) != null;
     }
 }
