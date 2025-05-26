@@ -10,6 +10,9 @@ spring:
     hibernate:
       ddl-auto: create # 배포 환경에서는 update
     show-sql: false
+  cors:
+    allowed-origins:
+      - ${EC2_HOST}
 
 token:
   jwt:
