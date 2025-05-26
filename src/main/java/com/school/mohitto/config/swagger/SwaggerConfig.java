@@ -14,16 +14,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
 
-    public static final String SERVICE_SECURITY_SCHEME_NAME = "ServiceAuth";
-    public static final String OAUTH_SECURITY_SCHEME_NAME = "KakaoAuth";
-    public static final String MOHITTO_SERVER_IP = "http://43.203.208.49:8080";
+    public static final String SERVICE_SECURITY_SCHEME_NAME = "BearerAuth";
 
     @Bean
     public OpenAPI mohittoApi() {
         return new OpenAPI()
                 .info(apiInfo())
                 .components(components())
-                .addServersItem(new Server().url("http://localhost:8080").description("로컬"));
+                .addSecurityItem(new SecurityRequirement().addList(SERVICE_SECURITY_SCHEME_NAME))// 여기에 이름 매칭
+                .addServersItem(new Server().url("/"));
     }
 
     private Info apiInfo() {
@@ -35,28 +34,12 @@ public class SwaggerConfig {
 
     private Components components() {
         return new Components()
-                .addSecuritySchemes(SERVICE_SECURITY_SCHEME_NAME, serviceSecurityScheme())
-                .addSecuritySchemes(OAUTH_SECURITY_SCHEME_NAME,oauthSecurityScheme());
-    }
-
-    private SecurityScheme serviceSecurityScheme() {
-        return new SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("bearer")
-                .bearerFormat("JWT")
-                .description("서비스에서 발급한 Bearer Token");
-    }
-
-    private SecurityScheme oauthSecurityScheme() {
-        final OAuthFlow authorizationCodeFlow = new OAuthFlow()
-                .authorizationUrl("https://kauth.kakao.com/oauth/authorize")
-                .tokenUrl("https://kauth.kakao.com/oauth/token");
-
-        final OAuthFlows oauthFlows = new OAuthFlows().authorizationCode(authorizationCodeFlow);
-
-        return new SecurityScheme()
-                .type(SecurityScheme.Type.OAUTH2)
-                .flows(oauthFlows)
-                .description("Kakao OAuth 인증");
+                .addSecuritySchemes(SERVICE_SECURITY_SCHEME_NAME, new SecurityScheme()
+                        .name("Authorization")
+                        .type(SecurityScheme.Type.HTTP)
+                        .scheme("bearer")
+                        .bearerFormat("JWT")
+                        .in(SecurityScheme.In.HEADER)
+                        .description("Bearer Token"));
     }
 }
