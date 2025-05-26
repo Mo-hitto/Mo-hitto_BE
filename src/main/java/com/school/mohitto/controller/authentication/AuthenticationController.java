@@ -1,6 +1,6 @@
 package com.school.mohitto.controller.authentication;
 
-import com.school.mohitto.config.SwaggerConfig;
+import com.school.mohitto.config.swagger.SwaggerConfig;
 import com.school.mohitto.domain.authentication.TokenType;
 import com.school.mohitto.domain.authentication.dto.*;
 import com.school.mohitto.service.authentication.AuthenticationService;
