@@ -1,5 +1,6 @@
 package com.school.mohitto.config;
 
+import com.school.mohitto.aws.s3.S3Properties;
 import com.school.mohitto.security.CorsProperties;
 import com.school.mohitto.security.jwt.JwtProperties;
 import com.school.mohitto.security.oauth2.KakaoOAuth2Properties;
@@ -10,7 +11,8 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties({
         JwtProperties.class,
         KakaoOAuth2Properties.class,
-        CorsProperties.class
+        CorsProperties.class,
+        S3Properties.class,
 })
 public class PropertiesConfiguration{
 
