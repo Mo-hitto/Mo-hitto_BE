@@ -5,7 +5,6 @@ import java.util.Map;
 public record KakaoUserInfoResponseDto (
         String id,
         Map<String, Object> properties,
-        String nickname,
-        String profile_image
+        Map<String, Object> kakao_account
 ){
 }

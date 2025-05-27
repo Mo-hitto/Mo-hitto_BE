@@ -10,11 +10,13 @@ import com.school.mohitto.repository.BlackListTokenRepository;
 import com.school.mohitto.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -53,6 +55,7 @@ public class AuthenticationService {
         ).orElseGet(() -> {
             User newUser = new User(
                     oauth2UserInfo.nickname(),
+                    oauth2UserInfo.email(),
                     oauth2UserInfo.profileImageUrl(),
                     oauth2UserInfo.oauth2Id(),
                     oauth2UserInfo.oauth2Type()

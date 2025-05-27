@@ -26,6 +26,9 @@ public class User {
     @Column(length = MAX_NAME_LENGTH)
     private String name;
 
+    @Column(unique = true)
+    private String email;
+
     @Column(nullable = false)
     private String profileImageUrl;
 
@@ -46,8 +49,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserSalon> userSalons = new ArrayList<>();
 
-    public User(String name, String profileImageUrl, String oauth2Id, OAuth2Type oauth2Type) {
+    public User(String name, String email, String profileImageUrl, String oauth2Id, OAuth2Type oauth2Type) {
         this.name = name;
+        this.email = email;
         this.profileImageUrl = profileImageUrl;
         this.oauth2Id = oauth2Id;
         this.oauth2Type = oauth2Type;
