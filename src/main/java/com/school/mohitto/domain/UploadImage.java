@@ -22,4 +22,8 @@ public class UploadImage {
 
     @Column(name = "url", length = 255)
     private String uploadImageUrl;
+
+    public UploadImage(String uploadImageUrl) {
+        this.uploadImageUrl = uploadImageUrl;
+    }
 }
