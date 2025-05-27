@@ -78,6 +78,7 @@ public class KakaoOAuth2Handler implements OAuth2Handler {
 
         return new OAuth2UserInfo(response.id(),OAuth2Type.KAKAO,
                 (String) response.properties().get("nickname"),
+                (String) response.kakao_account().get("email"),
                 (String) response.properties().get("profile_image")
         );
     }
