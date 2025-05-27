@@ -10,7 +10,7 @@ spring:
     driver-class-name: org.h2.Driver
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
@@ -23,7 +23,7 @@ token:
   jwt:
     access-key: ThisIsLocalAccessKeyThisIsLocalAccessKey
     refresh-key: ThisIsLocalRefreshKeyThisIsLocalRefreshKey
-    access-expired-hours: 1 # 1시간
+    access-expired-hours: 5 # 5시간
     refresh-expired-hours: 336  # 14일
 
 oauth2:
@@ -32,3 +32,10 @@ oauth2:
     client-secret: ${KAKAO_CLIENT_SECRET}
     redirect-uri: http://localhost:8080/oauth2/kakao/callback
     scope: ${KAKAO_SCOPE}
+
+cloud:
+  aws:
+    region: ${S3_REGION}
+    accessKey: ${S3_ACCESS_KEY}
+    secretKey: ${S3_SECRET_KEY}
+    bucket: ${S3_BUCKET}
