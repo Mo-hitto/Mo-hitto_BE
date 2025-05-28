@@ -3,6 +3,7 @@ package com.school.mohitto.domain;
 import com.school.mohitto.domain.mapping.UserSalon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -23,13 +24,28 @@ public class Salon {
     @Column(name = "name", length = 100)
     private String name;
 
-    @Column(name = "introduction", columnDefinition = "TEXT")
-    private String introduction;
+    @Column(name = "description", columnDefinition = "TEXT")
+    private String description;
 
     @Column(name = "address", length = 200)
-    private String Address;
+    private String address;
+
+    @Column(name = "telephone")
+    private String telephone;
+
+    @Column(name = "link")
+    private String link;
 
     // 연관관계
     @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL)
     private List<UserSalon> userSalons = new ArrayList<>();
+
+    @Builder
+    public Salon(String name, String description, String address, String telephone, String link) {
+        this.name = name;
+        this.description = description;
+        this.address = address;
+        this.telephone = telephone;
+        this.link = link;
+    }
 }
