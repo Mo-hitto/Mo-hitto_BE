@@ -30,8 +30,8 @@ public class Hair {
     private String method;
 
 
-    @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ModelImage> modelImages = new ArrayList<>();
+    @OneToOne(mappedBy = "hair", cascade = CascadeType.ALL, orphanRemoval = true)
+    private ModelImage modelImages;
 
     @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
     private List<UserHair> userHairs = new ArrayList<>();

@@ -16,7 +16,7 @@ public class ModelImage {
     @Column(name = "model_image_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hair_id")
     private Hair hair;
 
