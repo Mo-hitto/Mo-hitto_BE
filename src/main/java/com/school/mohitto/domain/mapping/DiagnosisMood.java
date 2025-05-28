@@ -2,21 +2,21 @@ package com.school.mohitto.domain.mapping;
 
 import com.school.mohitto.domain.BaseTimeEntity;
 import com.school.mohitto.domain.Diagnosis;
-import com.school.mohitto.domain.Impression;
+import com.school.mohitto.domain.Mood;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "D_impression")
+@Table(name = "D_Mood")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DiagnosisImpression extends BaseTimeEntity {
+public class DiagnosisMood extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "diagnosis_impression_id")
+    @Column(name = "diagnosis_Mood_id")
     private Long id;
 
     // 진단과의 연관관계
@@ -26,13 +26,13 @@ public class DiagnosisImpression extends BaseTimeEntity {
 
     // 인상과의 연관관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "impression_id")
-    private Impression impression;
+    @JoinColumn(name = "mood_id")
+    private Mood mood;
 
-    public static DiagnosisImpression of(Diagnosis diagnosis, Impression impression) {
-        DiagnosisImpression di = new DiagnosisImpression();
+    public static DiagnosisMood of(Diagnosis diagnosis, Mood mood) {
+        DiagnosisMood di = new DiagnosisMood();
         di.setDiagnosis(diagnosis);
-        di.setImpression(impression);
+        di.setMood(mood);
         return di;
     }
 
@@ -40,7 +40,7 @@ public class DiagnosisImpression extends BaseTimeEntity {
         this.diagnosis = diagnosis;
     }
 
-    public void setImpression(Impression impression) {
-        this.impression = impression;
+    public void setMood(Mood mood) {
+        this.mood = mood;
     }
 }

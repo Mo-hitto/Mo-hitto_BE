@@ -19,23 +19,23 @@ import org.springframework.transaction.annotation.Transactional;
 public class DiagnosisService {
 
     private final DiagnosisRepository diagnosisRepository;
-    private final GenderRepository genderRepository;
+    private final SexRepository sexRepository;
     private final HairTypeRepository hairTypeRepository;
     private final HairLengthRepository hairLengthRepository;
     private final ForeheadShapeRepository foreheadShapeRepository;
-    private final CheckboneShapeRepository checkboneShapeRepository;
+    private final CheekboneRepository cheekboneRepository;
     private final HairDifficultyRepository hairDifficultyRepository;
-    private final ImpressionRepository impressionRepository;
+    private final MoodRepository moodRepository;
     private final UserRepository userRepository;
 
 
-    private final DiagnosisGenderRepository diagnosisGenderRepository;
+    private final DiagnosisSexRepository diagnosisSexRepository;
     private final DiagnosisHairTypeRepository diagnosisHairTypeRepository;
     private final DiagnosisHairLengthRepository diagnosisHairLengthRepository;
     private final DiagnosisForeheadShapeRepository diagnosisForeheadShapeRepository;
-    private final DiagnosisCheckboneShapeRepository diagnosisCheckboneShapeRepository;
+    private final DiagnosisCheekboneRepository diagnosisCheekboneRepository;
     private final DiagnosisHairDifficultyRepository diagnosisHairDifficultyRepository;
-    private final DiagnosisImpressionRepository diagnosisImpressionRepository;
+    private final DiagnosisMoodRepository diagnosisMoodRepository;
 
 
     @Transactional
@@ -49,11 +49,11 @@ public class DiagnosisService {
 
 
         // 성별
-        Gender gender = genderRepository.findById(dto.genderId())
+        Sex sex = sexRepository.findById(dto.genderId())
                 .orElseThrow(() -> new CustomException(ErrorCode.GENDER_NOT_FOUND));
-        DiagnosisGender dg = DiagnosisGender.of(diagnosis, gender);
+        DiagnosisSex dg = DiagnosisSex.of(diagnosis, sex);
         diagnosis.addDiagnosisGender(dg);
-        diagnosisGenderRepository.save(dg);
+        diagnosisSexRepository.save(dg);
 
         // 모발 형태
         HairType hairType = hairTypeRepository.findById(dto.hairTypeId())
@@ -77,11 +77,11 @@ public class DiagnosisService {
         diagnosisForeheadShapeRepository.save(dfs);
 
         // 광대 형태
-        CheckboneShape checkboneShape = checkboneShapeRepository.findById(dto.checkboneShapeId())
+        Cheekbone cheekbone = cheekboneRepository.findById(dto.checkboneShapeId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHECKBONE_SHAPE_NOT_FOUND));
-        DiagnosisCheckboneShape dcs = DiagnosisCheckboneShape.of(diagnosis, checkboneShape);
+        DiagnosisCheekbone dcs = DiagnosisCheekbone.of(diagnosis, cheekbone);
         diagnosis.addDiagnosisCheckboneShape(dcs);
-        diagnosisCheckboneShapeRepository.save(dcs);
+        diagnosisCheekboneRepository.save(dcs);
 
         return DiagnosisCreateResponse.from(diagnosis.getId());
 
@@ -95,11 +95,11 @@ public class DiagnosisService {
         int count = 0;
 
         for (Long impressionId : request.impressionIds()) {
-            Impression impression = impressionRepository.findById(impressionId)
+            Mood mood = moodRepository.findById(impressionId)
                     .orElseThrow(() -> new CustomException(ErrorCode.INVALID_PARAMETER));
-            DiagnosisImpression di = DiagnosisImpression.of(diagnosis, impression);
+            DiagnosisMood di = DiagnosisMood.of(diagnosis, mood);
             diagnosis.addDiagnosisImpression(di);
-            diagnosisImpressionRepository.save(di);
+            diagnosisMoodRepository.save(di);
             count++;
         }
 
