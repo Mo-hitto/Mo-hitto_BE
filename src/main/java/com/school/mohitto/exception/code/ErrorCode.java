@@ -41,7 +41,10 @@ public enum ErrorCode {
     CHECKBONE_SHAPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 광대 형태 ID입니다."),
 
     // image 저장 관련 에러
-    FILE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST,  "잘못된 요청입니다.")
+    FILE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST,  "잘못된 요청입니다."),
+
+    // 네이버 검색 API 관련 에러
+    NO_SEARCH_RESULT(HttpStatus.NOT_FOUND,"검색 결과가 없습니다.")
 
     ;
 
