@@ -1,44 +1,43 @@
 package com.school.mohitto.domain.mapping;
 
 import com.school.mohitto.domain.BaseTimeEntity;
+import com.school.mohitto.domain.Cheekbone;
 import com.school.mohitto.domain.Diagnosis;
-import com.school.mohitto.domain.Gender;
-import com.school.mohitto.domain.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "D_gender")
+@Table(name = "D_cheekbone")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class DiagnosisGender extends BaseTimeEntity {
+public class DiagnosisCheekbone extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "DiagnosisGender_id")
+    @Column(name = "Diagnosis_Cheekbone_id")
     private Long id;
 
-    // 진단과의 연관관계 (1:1)
+    // 진단과의 연관관계
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnosis_id")
     private Diagnosis diagnosis;
 
-
-    // 성별과의 연관관계
+    // 광대 모양과의 연관관계
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "gender_id")
-    private Gender gender;
+    @JoinColumn(name = "cheekbone_id")
+    private Cheekbone cheekbone;
 
-    public static DiagnosisGender of(Diagnosis diagnosis, Gender gender) {
-        DiagnosisGender dg = new DiagnosisGender();
-        dg.diagnosis = diagnosis;
-        dg.gender = gender;
-        return dg;
+    public static DiagnosisCheekbone of(Diagnosis diagnosis, Cheekbone cheekbone) {
+        DiagnosisCheekbone dcs = new DiagnosisCheekbone();
+        dcs.diagnosis = diagnosis;
+        dcs.cheekbone = cheekbone;
+        return dcs;
     }
 
     public void setDiagnosis(Diagnosis diagnosis) {
         this.diagnosis = diagnosis;
     }
+
 }

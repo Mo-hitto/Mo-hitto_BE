@@ -1,7 +1,7 @@
 package com.school.mohitto.domain;
 
-import com.school.mohitto.domain.enums.GenderType;
-import com.school.mohitto.domain.mapping.DiagnosisGender;
+import com.school.mohitto.domain.enums.CheekboneType;
+import com.school.mohitto.domain.mapping.DiagnosisCheekbone;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -11,21 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Gender")
+@Table(name = "Cheekbone")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Gender {
+public class Cheekbone {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "gender_id")
+    @Column(name = "cheekbone_id")
     private Long id;
 
-    @Column(name = "gendertype", nullable = false)
+    @Column(name = "CheekboneType", nullable = false)
     @Enumerated(EnumType.STRING)
-    private GenderType gender;
+    private CheekboneType shape;
 
     // 연관관계
-    @OneToMany(mappedBy = "gender")
-    private List<DiagnosisGender> diagnosisGenders = new ArrayList<>();
-
+    @OneToMany(mappedBy = "cheekbone")
+    private List<DiagnosisCheekbone> diagnosisCheekbones = new ArrayList<>();
 }

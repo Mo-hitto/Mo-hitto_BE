@@ -26,7 +26,7 @@ public class Diagnosis extends BaseTimeEntity{
 
     // 진단 성별 정보와의 연관관계
     @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
-    private DiagnosisGender diagnosisGender;
+    private DiagnosisSex diagnosisSex;
 
     @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private DiagnosisHairType diagnosisHairType;
@@ -40,7 +40,7 @@ public class Diagnosis extends BaseTimeEntity{
     private DiagnosisHairLength diagnosisHairLength;
 
     @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
-    private DiagnosisCheckboneShape diagnosisCheckboneShape;
+    private DiagnosisCheekbone diagnosisCheekbone;
 
     @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private DiagnosisHairDifficulty diagnosisHairDifficulty;
@@ -49,7 +49,7 @@ public class Diagnosis extends BaseTimeEntity{
     private UploadImage uploadImage;
 
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DiagnosisImpression> diagnosisImpressions = new ArrayList<>();
+    private List<DiagnosisMood> diagnosisMoods = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -61,9 +61,9 @@ public class Diagnosis extends BaseTimeEntity{
         return diagnosis;
     }
 
-    public void addDiagnosisGender(DiagnosisGender diagnosisGender) {
-        this.diagnosisGender = diagnosisGender;
-        diagnosisGender.setDiagnosis(this);
+    public void addDiagnosisGender(DiagnosisSex diagnosisSex) {
+        this.diagnosisSex = diagnosisSex;
+        diagnosisSex.setDiagnosis(this);
     }
 
     public void addDiagnosisHairType(DiagnosisHairType diagnosisHairType) {
@@ -81,9 +81,9 @@ public class Diagnosis extends BaseTimeEntity{
         diagnosisForeheadShape.setDiagnosis(this);
     }
 
-    public void addDiagnosisCheckboneShape(DiagnosisCheckboneShape diagnosisCheckboneShape) {
-        this.diagnosisCheckboneShape = diagnosisCheckboneShape;
-        diagnosisCheckboneShape.setDiagnosis(this);
+    public void addDiagnosisCheckboneShape(DiagnosisCheekbone diagnosisCheekbone) {
+        this.diagnosisCheekbone = diagnosisCheekbone;
+        diagnosisCheekbone.setDiagnosis(this);
     }
 
     public void addDiagnosisHairDifficulty(DiagnosisHairDifficulty diagnosisHairDifficulty) {
@@ -91,9 +91,9 @@ public class Diagnosis extends BaseTimeEntity{
         diagnosisHairDifficulty.setDiagnosis(this);
     }
 
-    public void addDiagnosisImpression(DiagnosisImpression diagnosisImpression) {
-        this.diagnosisImpressions.add(diagnosisImpression);
-        diagnosisImpression.setDiagnosis(this);
+    public void addDiagnosisImpression(DiagnosisMood diagnosisMood) {
+        this.diagnosisMoods.add(diagnosisMood);
+        diagnosisMood.setDiagnosis(this);
     }
 
 
