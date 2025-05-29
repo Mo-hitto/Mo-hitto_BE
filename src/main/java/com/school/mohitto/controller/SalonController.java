@@ -1,9 +1,14 @@
 package com.school.mohitto.controller;
 
+import com.school.mohitto.domain.authentication.AuthUserInfo;
 import com.school.mohitto.dto.responseDTO.SalonInformationResponse;
+import com.school.mohitto.security.annotation.AuthUser;
 import com.school.mohitto.service.SalonService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -25,4 +30,18 @@ public class SalonController {
     public SalonInformationResponse naverSearchDynamic(@RequestParam String query) {
         return salonService.searchSalon(query);
     }
+
+    @PostMapping("/save")
+    @Operation(summary = "미용실 저장")
+    public ResponseEntity<String> saveUserSalon(
+            @AuthUser AuthUserInfo authUserInfo,
+            @RequestParam String address  // 또는 salonId
+    ) {
+        salonService.saveUserSalon(authUserInfo.userId(), address);
+        return ResponseEntity.ok("미용실이 저장되었습니다.");
+    }
+
+
+
+
 }
