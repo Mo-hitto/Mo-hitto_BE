@@ -37,3 +37,8 @@ cloud:
 naver:
   client-id: ${NAVER_CLIENT_ID}
   secret: ${NAVER_SECRET}
+
+fastapi:
+  extract-face: ${FASTAPI_FIRST_URL}
+  graph-rag: ${FASTAPI_SECOND_URL}
+  hair-transfer: ${FASTAPI_THIRD_URL}
