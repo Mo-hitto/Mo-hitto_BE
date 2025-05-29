@@ -1,5 +1,6 @@
 package com.school.mohitto.domain;
 
+import com.school.mohitto.domain.mapping.SalonHair;
 import com.school.mohitto.domain.mapping.UserHair;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -26,14 +27,22 @@ public class Hair {
     @Column(name = "explanation")
     private String explanation;
 
-    @Column(name = "styling_method")
-    private String method;
 
+    @Column(name = "is_liked")
+    private Boolean isLiked;
 
-    @OneToOne(mappedBy = "hair", cascade = CascadeType.ALL, orphanRemoval = true)
-    private ModelImage modelImages;
 
     @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
     private List<UserHair> userHairs = new ArrayList<>();
-    // 생성자, 빌더, 비즈니스 메서드
+
+    @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
+    private List<SalonHair> salonHairs = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diagnosis_id")
+    private Diagnosis diagnosis;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "model_image_id")
+    private ModelImage modelImage;
 }

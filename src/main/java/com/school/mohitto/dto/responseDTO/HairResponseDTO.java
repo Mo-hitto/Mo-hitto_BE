@@ -11,7 +11,7 @@ public record HairResponseDTO(
         return new HairResponseDTO(
                 hair.getId(),
                 hair.getName(),
-                hair.getModelImages().getUploadImageUrl()
+                hair.getModelImage().getUploadImageUrl()
         );
     }
 }
