@@ -1,6 +1,7 @@
 package com.school.mohitto.config;
 
 import com.school.mohitto.aws.s3.S3Properties;
+import com.school.mohitto.fastapi.FastapiProperties;
 import com.school.mohitto.naver.NaverProperties;
 import com.school.mohitto.security.CorsProperties;
 import com.school.mohitto.security.jwt.JwtProperties;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
         CorsProperties.class,
         S3Properties.class,
         NaverProperties.class,
+        FastapiProperties.class
 })
 public class PropertiesConfiguration{
 
