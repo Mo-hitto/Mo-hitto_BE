@@ -3,7 +3,7 @@ package com.school.mohitto.domain.enums;
 import lombok.Getter;
 
 @Getter
-public enum CheckboneShapeType {
+public enum CheekboneType {
     HIGH("high"),
     MEDIUM("medium"),
     LOW("low"),
@@ -12,7 +12,7 @@ public enum CheckboneShapeType {
 
     private final String value;
 
-    CheckboneShapeType(String value) {
+    CheekboneType(String value) {
         this.value = value;
     }
 
