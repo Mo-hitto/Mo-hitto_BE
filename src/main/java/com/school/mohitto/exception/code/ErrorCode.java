@@ -44,8 +44,14 @@ public enum ErrorCode {
     FILE_UPLOAD_FAIL(HttpStatus.BAD_REQUEST,  "잘못된 요청입니다."),
 
     // 네이버 검색 API 관련 에러
-    NO_SEARCH_RESULT(HttpStatus.NOT_FOUND,"검색 결과가 없습니다.")
+    NO_SEARCH_RESULT(HttpStatus.NOT_FOUND,"검색 결과가 없습니다."),
 
+
+
+    // 미용실 관련 에러
+    SALON_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 미용실입니다."),
+    SAVED_SALON_NOT_FOUND(HttpStatus.NOT_FOUND,"사용자에게 존재하지 않는 미용실입니다."),
+    ALREADY_SAVED_SALON(HttpStatus.BAD_REQUEST,"이미 저장된 미용실입니다.")
     ;
 
     private final HttpStatus status;
