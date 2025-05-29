@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 public record BasicDiagnosisRequest(
 
         @NotNull(message = "성별 ID는 필수입니다.")
-        Long genderId,
+        Long sexId,
 
         @NotNull(message = "모발 형태 ID는 필수입니다.")
         Long hairTypeId,
@@ -17,6 +17,6 @@ public record BasicDiagnosisRequest(
         Long foreheadShapeId,
 
         @NotNull(message = "광대 모양 ID는 필수입니다.")
-        Long checkboneShapeId
+        Long cheekboneId
 ) {}
 
