@@ -4,11 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum CheekboneType {
-    HIGH("high"),
-    MEDIUM("medium"),
-    LOW("low"),
-    PROMINENT("prominent"),
-    SUBTLE("subtle");
+    PROMINENT("많이 도드라짐"),
+    SLIGHTLY_PROMINENT("약간 도드라짐"),
+    NEUTRAL("눈에 띄지 않음");
 
     private final String value;
 

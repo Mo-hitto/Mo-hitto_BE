@@ -49,7 +49,7 @@ public class DiagnosisService {
 
 
         // 성별
-        Sex sex = sexRepository.findById(dto.genderId())
+        Sex sex = sexRepository.findById(dto.sexId())
                 .orElseThrow(() -> new CustomException(ErrorCode.GENDER_NOT_FOUND));
         DiagnosisSex dg = DiagnosisSex.of(diagnosis, sex);
         diagnosis.addDiagnosisGender(dg);
@@ -77,7 +77,7 @@ public class DiagnosisService {
         diagnosisForeheadShapeRepository.save(dfs);
 
         // 광대 형태
-        Cheekbone cheekbone = cheekboneRepository.findById(dto.checkboneShapeId())
+        Cheekbone cheekbone = cheekboneRepository.findById(dto.cheekboneId())
                 .orElseThrow(() -> new CustomException(ErrorCode.CHECKBONE_SHAPE_NOT_FOUND));
         DiagnosisCheekbone dcs = DiagnosisCheekbone.of(diagnosis, cheekbone);
         diagnosis.addDiagnosisCheckboneShape(dcs);
@@ -94,7 +94,7 @@ public class DiagnosisService {
 
         int count = 0;
 
-        for (Long impressionId : request.impressionIds()) {
+        for (Long impressionId : request.moodIds()) {
             Mood mood = moodRepository.findById(impressionId)
                     .orElseThrow(() -> new CustomException(ErrorCode.INVALID_PARAMETER));
             DiagnosisMood di = DiagnosisMood.of(diagnosis, mood);
