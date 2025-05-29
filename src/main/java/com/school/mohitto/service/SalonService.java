@@ -2,19 +2,28 @@ package com.school.mohitto.service;
 
 import com.school.mohitto.config.WebClientFactory;
 import com.school.mohitto.domain.Salon;
+import com.school.mohitto.domain.User;
+import com.school.mohitto.domain.mapping.UserSalon;
 import com.school.mohitto.dto.responseDTO.SalonInformationResponse;
+import com.school.mohitto.dto.responseDTO.SalonResponseDTO;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.naver.NaverProperties;
 import com.school.mohitto.naver.dto.LocalItem;
 import com.school.mohitto.naver.dto.NaverLocalSearchResponse;
 import com.school.mohitto.repository.SalonRepository;
+import com.school.mohitto.repository.UserRepository;
+import com.school.mohitto.repository.UserSalonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
+
+import static com.school.mohitto.exception.code.ErrorCode.*;
 
 
 @Slf4j
@@ -26,6 +35,8 @@ public class SalonService {
     private final WebClientFactory webClientFactory;
     private final NaverProperties naverProperties;
     private final SalonRepository salonRepository;
+    private final UserRepository userRepository;
+    private final UserSalonRepository userSalonRepository;
 
     private static String NAVER_SEARCH_API_URL = "https://openapi.naver.com/v1/search/local";
 
@@ -76,5 +87,45 @@ public class SalonService {
                 localItem.mapx(),
                 localItem.mapy());
     }
+
+    @Transactional
+    public void saveUserSalon(Long userId, String salonAddress) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+
+        Salon salon = salonRepository.findByAddress(salonAddress)
+                .orElseThrow(() -> new CustomException(SALON_NOT_FOUND));
+
+        boolean alreadySaved = userSalonRepository.existsByUserAndSalon(user, salon);
+        if (alreadySaved) {
+            throw new CustomException(ALREADY_SAVED_SALON);
+        }
+
+        UserSalon userSalon = new UserSalon(user, salon);
+        userSalonRepository.save(userSalon);
+    }
+
+    @Transactional
+    public void deleteSavedSalon(Long userId, Long salonId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
+
+        Salon salon = salonRepository.findById(salonId)
+                .orElseThrow(() -> new CustomException(SALON_NOT_FOUND));
+
+        UserSalon userSalon = userSalonRepository.findByUserAndSalon(user, salon)
+                .orElseThrow(() -> new CustomException(SAVED_SALON_NOT_FOUND));
+
+        userSalonRepository.delete(userSalon);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SalonResponseDTO> getSavedSalons(Long userId) {
+        List<Salon> salons = userSalonRepository.findSalonsByUserId(userId);
+        return salons.stream().map(SalonResponseDTO::from).toList();
+    }
+
+
+
 }
 

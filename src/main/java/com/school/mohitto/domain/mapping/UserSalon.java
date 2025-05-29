@@ -26,4 +26,10 @@ public class UserSalon extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "salon_id")
     private Salon salon;
+
+    public UserSalon(User user, Salon salon) {
+        this.user = user;
+        this.salon = salon;
+    }
+
 }
