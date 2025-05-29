@@ -29,15 +29,14 @@ public class HairController {
 
     @Operation(summary = "저장한 헤어스타일 목록 조회")
     @GetMapping
-    public ResponseEntity<HairResponseListDTO> getSavedHairs(
-            @Parameter(description = "Bearer {accessToken}", required = true)
+    public HairResponseListDTO getSavedHairs(
             @AuthUser AuthUserInfo authUserInfo,
             @ParameterObject
             @PageableDefault(size = 6, sort = "createdDate", direction = Sort.Direction.DESC)
             @Valid @PageConstraint Pageable pageable
     ) {
         HairResponseListDTO result = hairService.getSavedHairs(authUserInfo.userId(), pageable);
-        return ResponseEntity.ok(result);
+        return result;
     }
 
     @Operation(
