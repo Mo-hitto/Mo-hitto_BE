@@ -4,11 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum ForeheadShapeType {
-    ROUND("round"),
-    SQUARE("square"),
-    TRIANGLE("triangle"),
-    HEART("heart"),
-    OVAL("oval");
+    ROUND("동근형"),
+    M_SHAPE("M자형"),
+    SQUARE("네모형");
 
     private final String value;
 
