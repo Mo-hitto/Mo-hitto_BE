@@ -5,6 +5,9 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "model_images")
 @Getter
@@ -16,10 +19,10 @@ public class ModelImage {
     @Column(name = "model_image_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "hair_id")
-    private Hair hair;
-
-    @Column(name = "url", length = 255)
+    @Column(name = "upload_image_url", length = 255)
     private String uploadImageUrl;
+
+    @OneToMany(mappedBy = "modelImage")
+    private List<Hair> hairs = new ArrayList<>();
 }
+
