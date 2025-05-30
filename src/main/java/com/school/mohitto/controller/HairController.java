@@ -1,7 +1,7 @@
 package com.school.mohitto.controller;
 
 import com.school.mohitto.domain.authentication.AuthUserInfo;
-import com.school.mohitto.dto.responseDTO.HairResponseListDTO;
+import com.school.mohitto.dto.responseDTO.HairResponseList;
 import com.school.mohitto.exception.annotation.PageConstraint;
 import com.school.mohitto.security.annotation.AuthUser;
 import com.school.mohitto.service.HairService;
@@ -29,13 +29,13 @@ public class HairController {
 
     @Operation(summary = "저장한 헤어스타일 목록 조회")
     @GetMapping
-    public HairResponseListDTO getSavedHairs(
+    public HairResponseList getSavedHairs(
             @AuthUser AuthUserInfo authUserInfo,
             @ParameterObject
             @PageableDefault(size = 6, sort = "createdDate", direction = Sort.Direction.DESC)
             @Valid @PageConstraint Pageable pageable
     ) {
-        HairResponseListDTO result = hairService.getSavedHairs(authUserInfo.userId(), pageable);
+        HairResponseList result = hairService.getSavedHairs(authUserInfo.userId(), pageable);
         return result;
     }
 
@@ -50,7 +50,6 @@ public class HairController {
     })
     @DeleteMapping("/{hairId}")
     public ResponseEntity<String> deleteSavedHair(
-            @Parameter(description = "Bearer {accessToken}", required = true)
             @AuthUser AuthUserInfo authUserInfo,
 
             @Parameter(description = "삭제할 헤어스타일 ID", required = true)

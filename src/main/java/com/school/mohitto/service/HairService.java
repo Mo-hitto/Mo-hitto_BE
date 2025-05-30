@@ -3,7 +3,7 @@ package com.school.mohitto.service;
 import com.school.mohitto.domain.Hair;
 import com.school.mohitto.domain.User;
 import com.school.mohitto.domain.mapping.UserHair;
-import com.school.mohitto.dto.responseDTO.HairResponseListDTO;
+import com.school.mohitto.dto.responseDTO.HairResponseList;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.repository.HairRepository;
 import com.school.mohitto.repository.UserHairRepository;
@@ -24,9 +24,9 @@ public class HairService {
     private final UserRepository userRepository;
     private final HairRepository hairRepository;
 
-    public HairResponseListDTO getSavedHairs(Long userId, Pageable pageable) {
+    public HairResponseList getSavedHairs(Long userId, Pageable pageable) {
         Page<Hair> hairs = userHairRepository.findHairsByUserId(userId, pageable);
-        return HairResponseListDTO.from(hairs);
+        return HairResponseList.from(hairs);
     }
 
     @Transactional
