@@ -1,6 +1,8 @@
 package com.school.mohitto.dto.requestDTO;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
+
 import java.util.List;
 
 @Schema(description = "사용자의 얼굴 이미지 및 스타일 정보 요청")
@@ -35,4 +37,31 @@ public record FaceExtractRequest(
 
         @Schema(description = "앞머리 유무", example = "있음")
         String has_bangs
-) {}
+) {
+        @Builder
+        public static FaceExtractRequest of(
+                String user_image_url,
+                String hair_length,
+                String hair_type,
+                String dyed,
+                String forehead_shape,
+                String cheekbone,
+                List<String> mood,
+                String difficulty,
+                String sex,
+                String has_bangs
+        ) {
+                return new FaceExtractRequest(
+                        user_image_url,
+                        hair_length,
+                        hair_type,
+                        dyed,
+                        forehead_shape,
+                        cheekbone,
+                        mood,
+                        difficulty,
+                        sex,
+                        has_bangs
+                );
+        }
+}
