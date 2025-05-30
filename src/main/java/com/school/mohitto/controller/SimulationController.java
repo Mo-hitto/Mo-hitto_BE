@@ -5,6 +5,7 @@ import com.school.mohitto.dto.responseDTO.RecommandResponse;
 import com.school.mohitto.service.SimulationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -18,11 +19,11 @@ public class SimulationController {
 
     private final SimulationService simulationService;
 
-    @PostMapping("/recommand")
+    @PostMapping(value = "/recommand" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public RecommandResponse getRecommand(
-            @RequestPart(value = "image", required = false)
+            @RequestPart(value = "image", required = true)
             MultipartFile multipartFile,
-            @RequestBody SimulationRequest simulationRequest
+            @RequestPart(value = "data") SimulationRequest simulationRequest
     ) throws IOException {
         return simulationService.extractFaceAndRecommand(multipartFile,simulationRequest);
     }
