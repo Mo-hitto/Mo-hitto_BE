@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum HairTypeEnum {
-    STRAIGHT("straight"),
-    COILY("coily"),
-    CURLY("curly");
+    STRAIGHT("직모"),
+    COILY("반곱슬"),
+    CURLY("곱슬");
 
     private final String value;
 

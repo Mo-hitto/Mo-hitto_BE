@@ -5,9 +5,9 @@ import lombok.Getter;
 
 @Getter
 public enum HairDifficultyType {
-    EASY("easy"),
-    MEDIUM("medium"),
-    HARD("hard");
+    EASY("쉬움"),
+    MEDIUM("보통"),
+    HARD("어려움");
 
     private final String value;
 
