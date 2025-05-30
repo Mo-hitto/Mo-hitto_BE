@@ -29,11 +29,19 @@ public class Hair {
     @Column(name = "styling_method")
     private String method;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "model_image_id")
+    private ModelImage modelImage;
 
-    @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ModelImage> modelImages = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diagnosis_id")
+    private Diagnosis diagnosis;
 
     @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
     private List<UserHair> userHairs = new ArrayList<>();
     // 생성자, 빌더, 비즈니스 메서드
+
+    public void setDiagnosis(Diagnosis diagnosis) {
+        this.diagnosis = diagnosis;
+    }
 }

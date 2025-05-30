@@ -51,9 +51,11 @@ public class Diagnosis extends BaseTimeEntity{
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiagnosisMood> diagnosisMoods = new ArrayList<>();
 
-
     @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CreatedImage> createdImages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Hair> hairs = new ArrayList<>();
 
     public static Diagnosis create(User user) {
         Diagnosis diagnosis = new Diagnosis();
@@ -96,9 +98,9 @@ public class Diagnosis extends BaseTimeEntity{
         diagnosisMood.setDiagnosis(this);
     }
 
-
-
-
-
+    public void addHairs(List<Hair> hairs){
+        this.hairs.addAll(hairs);
+        hairs.forEach(hair -> hair.setDiagnosis(this));
+    }
 
 }
