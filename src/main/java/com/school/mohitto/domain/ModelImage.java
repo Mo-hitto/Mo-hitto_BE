@@ -21,6 +21,6 @@ public class ModelImage {
     @Column(name = "url", length = 255)
     private String uploadImageUrl;
 
-    @OneToMany(mappedBy = "model_image", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "modelImage", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Hair> hairs;
 }

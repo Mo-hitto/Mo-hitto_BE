@@ -31,7 +31,7 @@ public class Hair {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_image_id")
-    private ModelImage modelImages;
+    private ModelImage modelImage;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnosis_id")
