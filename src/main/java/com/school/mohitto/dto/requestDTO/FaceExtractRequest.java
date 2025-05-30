@@ -31,6 +31,8 @@ public record FaceExtractRequest(
         String difficulty,
 
         @Schema(description = "성별", example = "남성")
-        String sex
+        String sex,
 
+        @Schema(description = "앞머리 유무", example = "있음")
+        String has_bangs
 ) {}

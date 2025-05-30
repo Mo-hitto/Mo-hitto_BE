@@ -28,13 +28,13 @@ public record RecommandRequest(
         @Schema(description = "스타일링 난이도", example = "쉬운")
         String difficulty,
 
-        // @Schema(description = "앞머리 유무", example = "있음")
-        // String has_bangs,
+        @Schema(description = "앞머리 유무", example = "있음")
+        String has_bangs,
 
         @Schema(description = "얼굴형", example = "타원형")
-        String face_shape,
+        String face_shape_eval,
 
         @Schema(description = "요약 요청사항", example = "전체적으로 볼륨을 살리고 싶어요")
-        String summary
+        String final_evaluation
 
 ) {}

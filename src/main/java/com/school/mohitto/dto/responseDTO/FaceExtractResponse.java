@@ -13,6 +13,9 @@ public record FaceExtractResponse(
         @Schema(description = "모발 길이", example = "장발")
         String hair_length,
 
+        @Schema(description = "스타일링 난이도", example = "쉬운")
+        String difficulty,
+
         @Schema(description = "염색 여부", example = "X")
         String dyed,
 
@@ -30,9 +33,6 @@ public record FaceExtractResponse(
 
         @Schema(description = "기분/분위기 키워드", example = "[\"우아한\", \"따뜻한\", \"부드러운\"]")
         List<String> mood,
-
-        @Schema(description = "스타일링 난이도", example = "쉬운")
-        String difficulty,
 
         @Schema(description = "얼굴형 평가", example = "둥근형")
         String faceshape_eval,
@@ -59,6 +59,10 @@ public record FaceExtractResponse(
         String bottom_rate,
 
         @Schema(description = "성별", example = "남성")
-        String sex ){
+        String sex,
+
+        @Schema(description = "앞머리 유무", example = "있음")
+        String has_bangs
+){
 
 }

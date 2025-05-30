@@ -18,24 +18,9 @@ public record RecommandResponse(
             String description,
 
             @Schema(description = "추천된 미용실 목록")
-            List<HairShopInfo> hair_shops
+            List<String> hair_shops
 
-    ) {}
+    ) {
 
-    @Schema(description = "추천된 미용실 정보")
-    public record HairShopInfo(
-
-            @Schema(description = "미용실 이름", example = "미용실 A")
-            String hair_shop,
-
-            @Schema(description = "최종 추천 스타일", example = "레이어드")
-            String final_dic_style,
-
-            @Schema(description = "리뷰 개수", example = "120")
-            int review_count,
-
-            @Schema(description = "평균 평점", example = "4.8")
-            double mean_score
-
-    ) {}
+    }
 }

@@ -90,13 +90,20 @@ public class SimulationService {
                 .orElseThrow(() -> new CustomException(ErrorCode.GENDER_NOT_FOUND))
                 .getSex().getSex().name();
 
+        /*
+        String has_bangs = diagnosisHasBangRepository.findById(diagnosisId)
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST))
+                .getHasBang().name();
+        */
+
+        // To-Do : has_bang 부분 있음을 바꿔줘야됨
         FaceExtractRequest faceExtractRequest =
-                new FaceExtractRequest(user_image_url,hair_length,hair_type,dyed,forehead_shape,cheekbone,mood,difficulty,sex);
+                new FaceExtractRequest(user_image_url,hair_length,hair_type,dyed,forehead_shape,cheekbone,mood,difficulty,sex, "있음");
 
         FaceExtractResponse faceExtractResponse = extractFace(faceExtractRequest);
 
         RecommandRequest recommandRequest =
-                new RecommandRequest(user_image_url,hair_length,sex,cheekbone,mood,forehead_shape,difficulty,faceExtractResponse.faceshape_eval(),faceExtractResponse.final_evaluation());
+                new RecommandRequest(hair_length,hair_type,sex,cheekbone,mood,forehead_shape,difficulty,"있음",faceExtractResponse.faceshape_eval(),faceExtractResponse.final_evaluation());
 
         return generateHairStyle(recommandRequest);
     }
