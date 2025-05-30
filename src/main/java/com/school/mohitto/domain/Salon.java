@@ -1,5 +1,6 @@
 package com.school.mohitto.domain;
 
+import com.school.mohitto.domain.mapping.SalonHair;
 import com.school.mohitto.domain.mapping.UserSalon;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -37,6 +38,9 @@ public class Salon {
     private String link;
 
     // 연관관계
+    @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL)
+    private List<SalonHair> salonHairs = new ArrayList<>();
+
     @OneToMany(mappedBy = "salon", cascade = CascadeType.ALL)
     private List<UserSalon> userSalons = new ArrayList<>();
 
