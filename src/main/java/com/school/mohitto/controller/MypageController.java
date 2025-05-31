@@ -3,11 +3,15 @@ package com.school.mohitto.controller;
 import com.school.mohitto.domain.authentication.AuthUserInfo;
 import com.school.mohitto.dto.responseDTO.HairListResponse;
 import com.school.mohitto.dto.responseDTO.MypageUserInfoResponse;
+import com.school.mohitto.dto.responseDTO.*;
 import com.school.mohitto.exception.annotation.PageConstraint;
 import com.school.mohitto.security.annotation.AuthUser;
 import com.school.mohitto.service.HairService;
+import com.school.mohitto.service.SalonService;
+import com.school.mohitto.service.HairService;
 import com.school.mohitto.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,6 +32,7 @@ public class MypageController {
 
     private final HairService hairService;
     private final UserService userService;
+    private final SalonService salonService;
 
     @Operation(summary = "저장한 헤어스타일 목록 조회")
     @GetMapping("hair/saved")
@@ -39,6 +45,7 @@ public class MypageController {
         HairListResponse result = hairService.getSavedHairs(authUserInfo.userId(), pageable);
         return result;
     }
+
 
     @Operation(
         summary = "마이페이지 유저 정보 조회",
@@ -57,5 +64,25 @@ public class MypageController {
     }
 
 
+
+    @GetMapping("/salons/saved")
+    @Operation(summary = "내가 저장한 미용실 목록 조회")
+    public List<SalonResponse> getMySavedSalons(
+            @AuthUser AuthUserInfo authUserInfo
+    ) {
+        List<SalonResponse> salonsResponse = salonService.getSavedSalons(authUserInfo.userId());
+        return salonsResponse;
+    }
+
+    @DeleteMapping("/salons/saved/{salonId}")
+    @Operation(summary = "저장한 미용실 삭제", description = "저장된 미용실을 하트를 다시 눌러 삭제합니다.")
+    public DeletedSalonResponse deleteSavedSalon(
+            @AuthUser AuthUserInfo authUserInfo,
+            @Parameter(description = "삭제할 미용실 ID") @PathVariable Long salonId
+    ) {
+        salonService.deleteSavedSalon(authUserInfo.userId(), salonId);
+        DeletedSalonResponse response = new DeletedSalonResponse(salonId);
+        return response;
+    }
 }
 
