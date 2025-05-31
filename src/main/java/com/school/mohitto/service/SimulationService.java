@@ -3,10 +3,10 @@ package com.school.mohitto.service;
 import com.school.mohitto.aws.s3.S3Uploader;
 import com.school.mohitto.config.WebClientFactory;
 import com.school.mohitto.domain.Diagnosis;
+import com.school.mohitto.domain.ModelImage;
 import com.school.mohitto.domain.UploadImage;
-import com.school.mohitto.dto.requestDTO.FaceExtractRequest;
-import com.school.mohitto.dto.requestDTO.RecommandRequest;
-import com.school.mohitto.dto.requestDTO.SimulationRequest;
+import com.school.mohitto.dto.requestDTO.*;
+import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
 import com.school.mohitto.dto.responseDTO.FaceExtractResponse;
 import com.school.mohitto.dto.responseDTO.RecommandResponse;
 import com.school.mohitto.exception.CustomException;
@@ -14,16 +14,21 @@ import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.fastapi.FastapiProperties;
 import com.school.mohitto.repository.DiagnosisRepository;
 import com.school.mohitto.repository.DiagnosisRepositorys.*;
+import com.school.mohitto.repository.ModelImageRepository;
 import com.school.mohitto.repository.UploadImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Slf4j
@@ -42,6 +47,8 @@ public class SimulationService {
     private final DiagnosisMoodRepository diagnosisMoodRepository;
     private final DiagnosisRepository diagnosisRepository;
     private final UploadImageRepository uploadImageRepository;
+    private final ModelImageRepository modelImageRepository;
+
 
     private final WebClientFactory webClientFactory;
     private final S3Uploader s3Uploader;
@@ -182,6 +189,48 @@ public class SimulationService {
             throw new RuntimeException("추천 응답이 비어있습니다.");
         }
         return response;
+    }
+
+    public ChangeFaceSimulationResponse changeFaceInSimulationService(
+            MultipartFile multipartFile,
+            ChangeFaceSimulationRequest inputFaceRequest) throws IOException {
+        String user_image_url = s3Uploader.upload(multipartFile, "face");
+
+        ModelImage modelImage = modelImageRepository.findById(inputFaceRequest.modelImageId())
+                .orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
+
+        ChangeFaceRequest changeFaceRequest = new ChangeFaceRequest(user_image_url, modelImage.getUploadImageUrl());
+
+        Resource response = webClientFactory.create(fastapiProperties.hairTransfer()).post()
+                .uri("/simulate")
+                .accept(MediaType.IMAGE_PNG)
+                .bodyValue(changeFaceRequest)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, clientResponse ->
+                        clientResponse.bodyToMono(String.class).flatMap(error ->
+                                Mono.error(new RuntimeException("시뮬레이션 모델 오류: " + error))
+                        )
+                )
+                .bodyToMono(Resource.class)
+                .block();
+
+        MultipartFile file = convertResourceToMultipartFile(response);
+        String result_image_url = s3Uploader.upload(file, "result");
+        return new ChangeFaceSimulationResponse(result_image_url);
+    }
+
+    private MultipartFile convertResourceToMultipartFile(Resource resource) throws IOException {
+        String originalFileName = resource.getFilename();  // 예: "123_result.png"
+        String contentType = "image/jpg"; // 필요시 확장자 따라 변경 가능
+
+        try (InputStream inputStream = resource.getInputStream()) {
+            return new MockMultipartFile(
+                    "file",                  // field name (multipart 필드명)
+                    originalFileName,       // 클라이언트에서 올라온 파일명
+                    contentType,            // Content-Type
+                    inputStream              // 파일 데이터
+            );
+        }
     }
 }
 
