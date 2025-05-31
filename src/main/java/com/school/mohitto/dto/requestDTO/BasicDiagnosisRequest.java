@@ -17,6 +17,9 @@ public record BasicDiagnosisRequest(
         Long foreheadShapeId,
 
         @NotNull(message = "광대 모양 ID는 필수입니다.")
-        Long cheekboneId
+        Long cheekboneId,
+
+        @NotNull(message = "앞머리 유무 ID는 필수입니다.")
+        Long hasbangId
 ) {}
 
