@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum HairLengthType {
-    SHORT("short"),
-    MEDIUM("medium"),
-    LONG("long");
+    SHORT("단발"),
+    MEDIUM("중단발"),
+    LONG("장발");
 
     private final String value;
 
