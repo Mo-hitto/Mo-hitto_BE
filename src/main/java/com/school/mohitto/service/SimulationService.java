@@ -3,6 +3,8 @@ package com.school.mohitto.service;
 import com.school.mohitto.aws.s3.S3Uploader;
 import com.school.mohitto.config.WebClientFactory;
 import com.school.mohitto.domain.Diagnosis;
+import com.school.mohitto.domain.Hair;
+import com.school.mohitto.domain.ModelImage;
 import com.school.mohitto.domain.UploadImage;
 import com.school.mohitto.dto.requestDTO.FaceExtractRequest;
 import com.school.mohitto.dto.requestDTO.RecommandRequest;
@@ -14,6 +16,8 @@ import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.fastapi.FastapiProperties;
 import com.school.mohitto.repository.DiagnosisRepository;
 import com.school.mohitto.repository.DiagnosisRepositorys.*;
+import com.school.mohitto.repository.HairRepository;
+import com.school.mohitto.repository.ModelImageRepository;
 import com.school.mohitto.repository.UploadImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +46,8 @@ public class SimulationService {
     private final DiagnosisMoodRepository diagnosisMoodRepository;
     private final DiagnosisRepository diagnosisRepository;
     private final UploadImageRepository uploadImageRepository;
+    private final HairRepository hairRepository;
+    private final ModelImageRepository modelImageRepository;
 
     private final WebClientFactory webClientFactory;
     private final S3Uploader s3Uploader;
@@ -139,7 +145,7 @@ public class SimulationService {
                         .build();
         log.info(recommandRequest.toString());
 
-        return generateHairStyle(recommandRequest);
+        return generateHairStyle(recommandRequest, diagnosisId);
     }
 
 
@@ -165,7 +171,7 @@ public class SimulationService {
         return firstModelResponse;
     }
 
-    private RecommandResponse generateHairStyle(RecommandRequest recommandRequest) {
+    private RecommandResponse generateHairStyle(RecommandRequest recommandRequest, Long diagnosisId) {
         RecommandResponse response = webClientFactory.create(fastapiProperties.graphRag()).post()
                 .uri("/recommend")
                 .bodyValue(recommandRequest)
@@ -181,6 +187,25 @@ public class SimulationService {
         if (response == null) {
             throw new RuntimeException("추천 응답이 비어있습니다.");
         }
+
+        Diagnosis diagnosis = diagnosisRepository.findById(diagnosisId).orElseThrow(() -> new CustomException(ErrorCode.DIAGNOSIS_NOT_FOUND));
+        response.recommendations().stream().map(
+                recommendation ->
+                {
+                    // TO-DO : ModelImage modelImage = modelImageRepository.findBy
+                    Hair hair = Hair.builder()
+                            .name(recommendation.style())
+                            .explanation(recommendation.description())
+                            .isLiked(false)
+                            .diagnosis(diagnosis)
+                            .modelImage(null)
+                            .build();
+
+                    hairRepository.save(hair);
+                    return null;
+                }
+        );
+
         return response;
     }
 }
