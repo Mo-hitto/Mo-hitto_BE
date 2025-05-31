@@ -5,7 +5,7 @@ import com.school.mohitto.domain.Salon;
 import com.school.mohitto.domain.User;
 import com.school.mohitto.domain.mapping.UserSalon;
 import com.school.mohitto.dto.responseDTO.SalonInformationResponse;
-import com.school.mohitto.dto.responseDTO.SalonResponseDTO;
+import com.school.mohitto.dto.responseDTO.SalonResponse;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.naver.NaverProperties;
@@ -120,9 +120,9 @@ public class SalonService {
     }
 
     @Transactional(readOnly = true)
-    public List<SalonResponseDTO> getSavedSalons(Long userId) {
+    public List<SalonResponse> getSavedSalons(Long userId) {
         List<Salon> salons = userSalonRepository.findSalonsByUserId(userId);
-        return salons.stream().map(SalonResponseDTO::from).toList();
+        return salons.stream().map(SalonResponse::from).toList();
     }
 
 

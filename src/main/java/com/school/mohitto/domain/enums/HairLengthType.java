@@ -6,8 +6,7 @@ import lombok.Getter;
 public enum HairLengthType {
     SHORT("short"),
     MEDIUM("medium"),
-    LONG("long"),
-    EXTRA_LONG("extra_long");
+    LONG("long");
 
     private final String value;
 
