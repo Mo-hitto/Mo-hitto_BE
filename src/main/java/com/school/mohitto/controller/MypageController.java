@@ -43,25 +43,6 @@ public class MypageController {
     }
 
     @Operation(
-            summary = "저장한 헤어스타일 삭제",
-            description = "저장한 헤어스타일의 하트를 다시 눌러 삭제합니다."
-    )
-    @ApiResponses({
-            @ApiResponse(responseCode = "200", description = "삭제 성공"),
-            @ApiResponse(responseCode = "404", description = "해당 헤어스타일을 찾을 수 없음"),
-            @ApiResponse(responseCode = "500", description = "서버 오류")
-    })
-    @DeleteMapping("hair/delete/{hairId}")
-    public ResponseEntity<String> deleteSavedHair(
-            @AuthUser AuthUserInfo authUserInfo,
-            @Parameter(description = "삭제할 헤어스타일 ID", required = true)
-            @PathVariable Long hairId
-    ) {
-        hairService.deleteSavedHair(authUserInfo.userId(), hairId);
-        return ResponseEntity.ok("삭제되었습니다.");
-    }
-
-    @Operation(
         summary = "마이페이지 유저 정보 조회",
         description = "마이페이지 상단에 보여줄 유저의 닉네임, 프로필이미지 등을 조회합니다."
     )
@@ -76,5 +57,7 @@ public class MypageController {
     ){
         return userService.getMypageUserInfo(authUserInfo.userId());
     }
+
+
 }
 

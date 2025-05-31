@@ -45,4 +45,9 @@ public class Hair {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_image_id")
     private ModelImage modelImage;
+
+    public void updateLike(boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+
 }
