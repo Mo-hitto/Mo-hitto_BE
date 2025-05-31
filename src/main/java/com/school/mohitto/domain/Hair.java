@@ -31,10 +31,6 @@ public class Hair extends BaseTimeEntity{
     @Column(name = "is_liked")
     private Boolean isLiked;
 
-
-    @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
-    private List<UserHair> userHairs = new ArrayList<>();
-
     @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
     private List<SalonHair> salonHairs = new ArrayList<>();
 
@@ -46,6 +42,9 @@ public class Hair extends BaseTimeEntity{
     @JoinColumn(name = "model_image_id")
     private ModelImage modelImage;
 
+    @OneToOne(mappedBy = "hair", fetch = FetchType.LAZY)
+    private CreatedImage createdImage;
+    
     public void updateLike(boolean isLiked) {
         this.isLiked = isLiked;
     }

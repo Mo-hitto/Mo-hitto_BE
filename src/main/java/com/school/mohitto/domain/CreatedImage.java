@@ -16,9 +16,9 @@ public class CreatedImage extends BaseTimeEntity {
     @Column(name = "created_image_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "diagnosis_id")
-    private Diagnosis diagnosis;
+    @OneToOne
+    @JoinColumn(name = "hair_id", nullable = true)
+    private Hair hair;
 
     @Column(name = "url", length = 255)
     private String createdImageUrl;
