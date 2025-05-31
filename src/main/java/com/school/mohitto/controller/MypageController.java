@@ -1,11 +1,13 @@
 package com.school.mohitto.controller;
 
 import com.school.mohitto.domain.authentication.AuthUserInfo;
-import com.school.mohitto.dto.responseDTO.*;
 import com.school.mohitto.exception.annotation.PageConstraint;
 import com.school.mohitto.security.annotation.AuthUser;
 import com.school.mohitto.service.HairService;
 import com.school.mohitto.service.SalonService;
+import com.school.mohitto.dto.responseDTO.HairResponseList;
+import com.school.mohitto.dto.responseDTO.MypageUserInfoResponse;
+import com.school.mohitto.service.HairService;
 import com.school.mohitto.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController

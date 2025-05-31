@@ -48,6 +48,10 @@ public enum ErrorCode {
 
     // 저장된 머리 관련 에러
     HAIR_NOT_FOUND(HttpStatus.NOT_FOUND, "헤어 정보를 찾을 수 없습니다."),
+    SAVED_HAIR_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 헤어정보를 찾을 수 없습니다.")
+
+    // 저장된 머리 관련 에러
+    HAIR_NOT_FOUND(HttpStatus.NOT_FOUND, "헤어 정보를 찾을 수 없습니다."),
     SAVED_HAIR_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 헤어정보를 찾을 수 없습니다."),
 
 
