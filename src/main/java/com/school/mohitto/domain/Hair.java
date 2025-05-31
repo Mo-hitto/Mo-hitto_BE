@@ -14,7 +14,7 @@ import java.util.List;
 @Table(name = "hairs")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Hair {
+public class Hair extends BaseTimeEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,10 +31,6 @@ public class Hair {
     @Column(name = "is_liked")
     private Boolean isLiked;
 
-
-    @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
-    private List<UserHair> userHairs = new ArrayList<>();
-
     @OneToMany(mappedBy = "hair", cascade = CascadeType.ALL)
     private List<SalonHair> salonHairs = new ArrayList<>();
 
@@ -45,4 +41,12 @@ public class Hair {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_image_id")
     private ModelImage modelImage;
+
+    @OneToOne(mappedBy = "hair", fetch = FetchType.LAZY)
+    private CreatedImage createdImage;
+    
+    public void updateLike(boolean isLiked) {
+        this.isLiked = isLiked;
+    }
+
 }

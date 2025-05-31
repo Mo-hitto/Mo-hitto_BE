@@ -40,7 +40,6 @@ public class DiagnosisController {
             }
     )
     public DiagnosisCreateResponse saveBasicDiagnosis(
-            @Parameter(description = "Bearer {accessToken}", required = true)
             @AuthUser final AuthUserInfo authUserInfo,
             @RequestBody @Valid BasicDiagnosisRequest request) {
         DiagnosisCreateResponse diagnosisCreateResponse = diagnosisService.saveBasicDiagnosis(request, authUserInfo.userId());

@@ -1,10 +1,10 @@
 package com.school.mohitto.service;
 
 import com.school.mohitto.domain.Hair;
-import com.school.mohitto.domain.User;
-import com.school.mohitto.domain.mapping.UserHair;
-import com.school.mohitto.dto.responseDTO.HairResponseList;
+import com.school.mohitto.dto.responseDTO.HairLikeToggleResponse;
+import com.school.mohitto.dto.responseDTO.HairListResponse;
 import com.school.mohitto.exception.CustomException;
+import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.repository.HairRepository;
 import com.school.mohitto.repository.UserHairRepository;
 import com.school.mohitto.repository.UserRepository;
@@ -14,8 +14,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.school.mohitto.exception.code.ErrorCode.*;
-
 @Service
 @RequiredArgsConstructor
 public class HairService {
@@ -24,24 +22,30 @@ public class HairService {
     private final UserRepository userRepository;
     private final HairRepository hairRepository;
 
-    public HairResponseList getSavedHairs(Long userId, Pageable pageable) {
-        Page<Hair> hairs = userHairRepository.findHairsByUserId(userId, pageable);
-        return HairResponseList.from(hairs);
-    }
 
     @Transactional
-    public void deleteSavedHair(Long userId, Long hairId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new CustomException(USER_NOT_FOUND));
-
+    public HairLikeToggleResponse toggleLikeStatus(Long hairId) {
         Hair hair = hairRepository.findById(hairId)
-                .orElseThrow(() -> new CustomException(HAIR_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
 
-        UserHair userHair = userHairRepository.findByUserAndHair(user, hair)
-                .orElseThrow(() -> new CustomException(SAVED_HAIR_NOT_FOUND));
+        boolean newLikeState = !hair.getIsLiked();
+        hair.updateLike(newLikeState);
 
-        userHairRepository.delete(userHair);
+        return new HairLikeToggleResponse(newLikeState ? hair.getId() : null);
     }
+
+    @Transactional(readOnly = true)
+    public HairListResponse getSavedHairs(Long userId, Pageable pageable) {
+        Page<Hair> page = hairRepository.findLikedHairsByUserId(userId, pageable);
+        return HairListResponse.from(page);
+    }
+
+
+
+
+
+
+
 
 
 }

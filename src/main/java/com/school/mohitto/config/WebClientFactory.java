@@ -12,6 +12,8 @@ public class WebClientFactory {
 
     public WebClient create(String baseUrl) {
         return webClientBuilder
+                .codecs(configurer -> configurer.defaultCodecs()
+                .maxInMemorySize(10 * 1024 * 1024))
                 .baseUrl(baseUrl)
                 .build();
     }
