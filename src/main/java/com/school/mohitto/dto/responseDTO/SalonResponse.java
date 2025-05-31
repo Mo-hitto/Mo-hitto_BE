@@ -2,7 +2,7 @@ package com.school.mohitto.dto.responseDTO;
 
 import com.school.mohitto.domain.Salon;
 
-public record SalonResponseDTO(
+public record SalonResponse(
         Long id,
         String name,
         String description,
@@ -10,8 +10,8 @@ public record SalonResponseDTO(
         String telephone,
         String link
 ) {
-    public static SalonResponseDTO from(Salon salon) {
-        return new SalonResponseDTO(
+    public static SalonResponse from(Salon salon) {
+        return new SalonResponse(
                 salon.getId(),
                 salon.getName(),
                 salon.getDescription(),
