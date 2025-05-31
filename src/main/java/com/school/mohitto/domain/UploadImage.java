@@ -16,7 +16,7 @@ public class UploadImage {
     @Column(name = "Image_id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "diagnosis_id")
     private Diagnosis diagnosis;
 
@@ -24,6 +24,11 @@ public class UploadImage {
     private String uploadImageUrl;
 
     public UploadImage(String uploadImageUrl) {
+        this.uploadImageUrl = uploadImageUrl;
+    }
+
+    public UploadImage(Diagnosis diagnosis,String uploadImageUrl) {
+        this.diagnosis = diagnosis;
         this.uploadImageUrl = uploadImageUrl;
     }
 }
