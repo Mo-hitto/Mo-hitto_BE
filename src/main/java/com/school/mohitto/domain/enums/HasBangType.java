@@ -4,8 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum HasBangType{
-    TRUE("있음"),
-    FALSE("없음");
+    YES("있음"),
+    NO("없음"),
+    NONE("상관없음");
 
     private final String value;
 
