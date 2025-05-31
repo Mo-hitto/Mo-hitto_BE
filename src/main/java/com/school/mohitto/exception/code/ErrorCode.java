@@ -39,6 +39,7 @@ public enum ErrorCode {
     HAIR_LENGTH_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 기장 ID입니다."),
     FOREHEAD_SHAPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 이마 형태 ID입니다."),
     CHECKBONE_SHAPE_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 광대 형태 ID입니다."),
+    HASBANG_NOT_FOUND(HttpStatus.BAD_REQUEST, "유효하지 않은 앞머리 ID입니다."),
     DIFFICULTY_NOT_FOUND(HttpStatus.NOT_FOUND, "DIFFICULTY를 찾을 수 없습니다."),
 
     // image 저장 관련 에러

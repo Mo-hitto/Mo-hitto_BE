@@ -27,6 +27,7 @@ public class DiagnosisService {
     private final HairDifficultyRepository hairDifficultyRepository;
     private final MoodRepository moodRepository;
     private final UserRepository userRepository;
+    private final HasBangRepository hasBangRepository;
 
 
     private final DiagnosisSexRepository diagnosisSexRepository;
@@ -36,6 +37,7 @@ public class DiagnosisService {
     private final DiagnosisCheekboneRepository diagnosisCheekboneRepository;
     private final DiagnosisHairDifficultyRepository diagnosisHairDifficultyRepository;
     private final DiagnosisMoodRepository diagnosisMoodRepository;
+    private final DiagnosisHasBangsRepository diagnosisHasBangsRepository;
 
 
     @Transactional
@@ -82,6 +84,14 @@ public class DiagnosisService {
         DiagnosisCheekbone dcs = DiagnosisCheekbone.of(diagnosis, cheekbone);
         diagnosis.addDiagnosisCheckboneShape(dcs);
         diagnosisCheekboneRepository.save(dcs);
+
+        //앞머리 형태
+        HasBangs hasBangs = hasBangRepository.findById(dto.hasbangId())
+                .orElseThrow(() -> new CustomException(ErrorCode.HASBANG_NOT_FOUND));
+        DiagnosisHasBangs dhs = DiagnosisHasBangs.of(diagnosis, hasBangs);
+        diagnosis.addDiagnosisHasbangs(dhs);
+        diagnosisHasBangsRepository.save(dhs);
+
 
         return DiagnosisCreateResponse.from(diagnosis.getId());
 

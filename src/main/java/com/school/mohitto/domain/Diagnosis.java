@@ -40,6 +40,9 @@ public class Diagnosis extends BaseTimeEntity{
     private DiagnosisHairLength diagnosisHairLength;
 
     @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
+    private DiagnosisHasBangs diagnosisHasbangs;
+
+    @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
     private DiagnosisCheekbone diagnosisCheekbone;
 
     @OneToOne(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -83,6 +86,11 @@ public class Diagnosis extends BaseTimeEntity{
     public void addDiagnosisCheckboneShape(DiagnosisCheekbone diagnosisCheekbone) {
         this.diagnosisCheekbone = diagnosisCheekbone;
         diagnosisCheekbone.setDiagnosis(this);
+    }
+
+    public void addDiagnosisHasbangs(DiagnosisHasBangs diagnosisHasbangs) {
+        this.diagnosisHasbangs = diagnosisHasbangs;
+        diagnosisHasbangs.setDiagnosis(this);
     }
 
     public void addDiagnosisHairDifficulty(DiagnosisHairDifficulty diagnosisHairDifficulty) {
