@@ -39,9 +39,6 @@ public class User {
     @Column(name = "oauth2_type", nullable = false)
     private OAuth2Type oauth2Type;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserHair> userHairs = new ArrayList<>();
-
     @OneToMany(mappedBy = "user")
     private List<Diagnosis> diagnosis = new ArrayList<>();
 

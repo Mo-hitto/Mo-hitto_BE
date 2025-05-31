@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum HairTypeEnum {
     STRAIGHT("직모"),
     COILY("반곱슬"),
-    CURLY("곱슬");
+    CURLY("곱슬"),
+    NONE("상관없음");
 
     private final String value;
 
