@@ -3,6 +3,7 @@ package com.school.mohitto.controller;
 import com.school.mohitto.dto.requestDTO.ChangeFaceSimulationRequest;
 import com.school.mohitto.dto.requestDTO.SimulationRequest;
 import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
+import com.school.mohitto.dto.responseDTO.FinalRecommandResponse;
 import com.school.mohitto.dto.responseDTO.RecommandResponse;
 import com.school.mohitto.service.SimulationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -22,7 +23,7 @@ public class SimulationController {
     private final SimulationService simulationService;
 
     @PostMapping(value = "/recommand" , consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public RecommandResponse getRecommand(
+    public FinalRecommandResponse getRecommand(
             @RequestPart(value = "image", required = true)
             MultipartFile multipartFile,
             @RequestPart(value = "data") SimulationRequest simulationRequest
