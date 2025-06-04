@@ -50,9 +50,13 @@ public enum ErrorCode {
 
     // 저장된 머리 관련 에러
     HAIR_NOT_FOUND(HttpStatus.NOT_FOUND, "헤어 정보를 찾을 수 없습니다."),
-    SAVED_HAIR_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 헤어정보를 찾을 수 없습니다.")
+    SAVED_HAIR_NOT_FOUND(HttpStatus.NOT_FOUND, "저장된 헤어정보를 찾을 수 없습니다."),
 
 
+    // 미용실 관련 에러
+    SALON_NOT_FOUND(HttpStatus.NOT_FOUND,"존재하지 않는 미용실입니다."),
+    SAVED_SALON_NOT_FOUND(HttpStatus.NOT_FOUND,"사용자에게 존재하지 않는 미용실입니다."),
+    ALREADY_SAVED_SALON(HttpStatus.BAD_REQUEST,"이미 저장된 미용실입니다.")
     ;
 
     private final HttpStatus status;
