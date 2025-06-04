@@ -70,12 +70,12 @@ public class SimulationService {
         log.info(user_image_url.toString());
 
 
-        String hair_length = diagnosisHairLengthRepository.findById(diagnosisId)
+        String hair_length = diagnosisHairLengthRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.HAIR_LENGTH_NOT_FOUND))
                 .getHairLength().getHairLength().getValue();
         log.info(hair_length.toString());
 
-        String hair_type = diagnosisHairTypeRepository.findById(diagnosisId)
+        String hair_type = diagnosisHairTypeRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.HAIR_TYPE_NOT_FOUND))
                 .getHairType().getType().getValue();
         log.info(hair_type.toString());
@@ -83,35 +83,35 @@ public class SimulationService {
 
         String dyed = "X";
 
-        String forehead_shape = diagnosisForeheadShapeRepository.findById(diagnosisId)
+        String forehead_shape = diagnosisForeheadShapeRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.FOREHEAD_SHAPE_NOT_FOUND))
                 .getForeheadShape().getShape().getValue();
         log.info(forehead_shape.toString());
 
-        String cheekbone = diagnosisCheekboneRepository.findById(diagnosisId)
+        String cheekbone = diagnosisCheekboneRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHECKBONE_SHAPE_NOT_FOUND))
                 .getCheekbone().getShape().getValue();
         log.info(cheekbone.toString());
 
-        List<String> mood = diagnosisMoodRepository.findAllById(diagnosisId)
+        List<String> mood = diagnosisMoodRepository.findAllByDiagnosisId(diagnosisId)
                 .stream().map(diagnosisMood -> {
                     log.info(diagnosisMood.toString());
             return diagnosisMood.getMood().getMoodType().getValue();
         }).toList();
 
 
-        String difficulty = diagnosisHairDifficultyRepository.findById(diagnosisId)
+        String difficulty = diagnosisHairDifficultyRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.DIFFICULTY_NOT_FOUND))
                 .getHairDifficulty().getType().getValue();
         log.info(difficulty.toString());
 
-        String sex = diagnosisSexRepository.findById(diagnosisId)
+        String sex = diagnosisSexRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.GENDER_NOT_FOUND))
                 .getSex().getSex().getValue();
         log.info(sex.toString());
 
 
-        String has_bangs = diagnosisHasBangsRepository.findById(diagnosisId)
+        String has_bangs = diagnosisHasBangsRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.BAD_REQUEST))
                 .getHasBangs().getHasBangType().getValue();
 
