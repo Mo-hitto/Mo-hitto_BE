@@ -4,10 +4,12 @@ import com.school.mohitto.aws.s3.S3Uploader;
 import com.school.mohitto.config.WebClientFactory;
 import com.school.mohitto.domain.Diagnosis;
 import com.school.mohitto.domain.ModelImage;
+import com.school.mohitto.domain.Hair;
 import com.school.mohitto.domain.UploadImage;
 import com.school.mohitto.dto.requestDTO.*;
 import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
 import com.school.mohitto.dto.responseDTO.FaceExtractResponse;
+import com.school.mohitto.dto.responseDTO.FinalRecommandResponse;
 import com.school.mohitto.dto.responseDTO.RecommandResponse;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
@@ -15,6 +17,7 @@ import com.school.mohitto.fastapi.FastapiProperties;
 import com.school.mohitto.repository.DiagnosisRepository;
 import com.school.mohitto.repository.DiagnosisRepositorys.*;
 import com.school.mohitto.repository.ModelImageRepository;
+import com.school.mohitto.repository.HairRepository;
 import com.school.mohitto.repository.UploadImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +33,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -49,13 +53,14 @@ public class SimulationService {
     private final UploadImageRepository uploadImageRepository;
     private final ModelImageRepository modelImageRepository;
 
+    private final HairRepository hairRepository;
 
     private final WebClientFactory webClientFactory;
     private final S3Uploader s3Uploader;
     private final FastapiProperties fastapiProperties;
 
     @Transactional
-    public RecommandResponse extractFaceAndRecommand(
+    public FinalRecommandResponse extractFaceAndRecommand(
             MultipartFile multipartFile,
             SimulationRequest simulationRequest ) throws IOException {
 
@@ -146,7 +151,7 @@ public class SimulationService {
                         .build();
         log.info(recommandRequest.toString());
 
-        return generateHairStyle(recommandRequest);
+        return generateHairStyle(recommandRequest, diagnosisId);
     }
 
 
@@ -172,7 +177,7 @@ public class SimulationService {
         return firstModelResponse;
     }
 
-    private RecommandResponse generateHairStyle(RecommandRequest recommandRequest) {
+    private FinalRecommandResponse generateHairStyle(RecommandRequest recommandRequest, Long diagnosisId) {
         RecommandResponse response = webClientFactory.create(fastapiProperties.graphRag()).post()
                 .uri("/recommend")
                 .bodyValue(recommandRequest)
@@ -188,7 +193,30 @@ public class SimulationService {
         if (response == null) {
             throw new RuntimeException("추천 응답이 비어있습니다.");
         }
-        return response;
+
+        Diagnosis diagnosis = diagnosisRepository.findById(diagnosisId).orElseThrow(() -> new CustomException(ErrorCode.DIAGNOSIS_NOT_FOUND));
+        List<FinalRecommandResponse.StyleHairInfo> result = response.recommendations().stream().map(
+                recommendation ->
+                {
+                    ModelImage modelImage = modelImageRepository.findModelImageByDiagnosisFeature(diagnosis);
+                    Hair hair = Hair.builder()
+                            .name(recommendation.style())
+                            .explanation(recommendation.description())
+                            .isLiked(false)
+                            .diagnosis(diagnosis)
+                            .modelImage(modelImage)
+                            .build();
+
+                    hairRepository.save(hair);
+                    return new FinalRecommandResponse.StyleHairInfo(
+                            recommendation.style(),
+                            modelImage != null ? modelImage.getId() : null,
+                            recommendation.description(),
+                            recommendation.hair_shops());
+                }
+        ).collect(Collectors.toList());
+
+        return new FinalRecommandResponse(result);
     }
 
     public ChangeFaceSimulationResponse changeFaceInSimulationService(
@@ -204,6 +232,7 @@ public class SimulationService {
         Resource response = webClientFactory.create(fastapiProperties.hairTransfer()).post()
                 .uri("/simulate")
                 .accept(MediaType.IMAGE_PNG)
+                .accept(MediaType.IMAGE_JPEG)
                 .bodyValue(changeFaceRequest)
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, clientResponse ->

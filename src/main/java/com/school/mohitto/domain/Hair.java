@@ -1,9 +1,9 @@
 package com.school.mohitto.domain;
 
 import com.school.mohitto.domain.mapping.SalonHair;
-import com.school.mohitto.domain.mapping.UserHair;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -44,9 +44,18 @@ public class Hair extends BaseTimeEntity{
 
     @OneToOne(mappedBy = "hair", fetch = FetchType.LAZY)
     private CreatedImage createdImage;
-    
+
     public void updateLike(boolean isLiked) {
         this.isLiked = isLiked;
     }
 
+
+    @Builder
+    public Hair(String name, String explanation, Boolean isLiked, Diagnosis diagnosis, ModelImage modelImage) {
+        this.name = name;
+        this.explanation = explanation;
+        this.isLiked = isLiked;
+        this.diagnosis = diagnosis;
+        this.modelImage = modelImage;
+    }
 }
