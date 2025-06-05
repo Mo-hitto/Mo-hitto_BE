@@ -210,7 +210,7 @@ public class SimulationService {
                     hairRepository.save(hair);
                     return new FinalRecommandResponse.StyleHairInfo(
                             recommendation.style(),
-                            modelImage.getId(),
+                            modelImage != null ? modelImage.getId() : null,
                             recommendation.description(),
                             recommendation.hair_shops());
                 }
