@@ -199,7 +199,7 @@ public class SimulationService {
                 recommendation ->
                 {
                     ModelImage modelImage = modelImageRepository.findModelImageByDiagnosisFeature(diagnosis,recommendation.style());
-                    log.info(modelImage.toString());
+                    // log.info(modelImage.getName());
                     Hair hair = Hair.builder()
                             .name(recommendation.style())
                             .explanation(recommendation.description())
