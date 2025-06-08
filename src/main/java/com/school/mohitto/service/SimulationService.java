@@ -198,7 +198,8 @@ public class SimulationService {
         List<FinalRecommandResponse.StyleHairInfo> result = response.recommendations().stream().map(
                 recommendation ->
                 {
-                    ModelImage modelImage = modelImageRepository.findModelImageByDiagnosisFeature(diagnosis);
+                    ModelImage modelImage = modelImageRepository.findModelImageByDiagnosisFeature(diagnosis,recommendation.style());
+                    // log.info(modelImage.getName());
                     Hair hair = Hair.builder()
                             .name(recommendation.style())
                             .explanation(recommendation.description())
