@@ -208,8 +208,9 @@ public class SimulationService {
                             .modelImage(modelImage)
                             .build();
 
-                    hairRepository.save(hair);
+                    Long hairId = hairRepository.save(hair).getId();
                     return new FinalRecommandResponse.StyleHairInfo(
+                            hairId,
                             recommendation.style(),
                             modelImage != null ? modelImage.getId() : null,
                             recommendation.description(),
