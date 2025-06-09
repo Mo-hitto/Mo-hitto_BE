@@ -21,7 +21,7 @@ public class CreatedImage extends BaseTimeEntity {
     private Hair hair;
 
 
-    @Column(name = "url", length = 255)
+    @Column(name = "url", columnDefinition = "TEXT")
     private String createdImageUrl;
 
     @Builder

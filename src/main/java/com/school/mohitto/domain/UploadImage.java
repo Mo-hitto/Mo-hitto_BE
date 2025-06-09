@@ -20,7 +20,7 @@ public class UploadImage {
     @JoinColumn(name = "diagnosis_id")
     private Diagnosis diagnosis;
 
-    @Column(name = "url", length = 255)
+    @Column(name = "url", columnDefinition = "TEXT")
     private String uploadImageUrl;
 
     public UploadImage(String uploadImageUrl) {
