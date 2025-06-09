@@ -12,6 +12,9 @@ public record FinalRecommandResponse(
     @Schema(description = "스타일 정보")
     public record StyleHairInfo(
 
+            @Schema(description = "헤어Id", example = "1")
+            Long hairId,
+
             @Schema(description = "추천된 헤어스타일 이름", example = "레이어드 컷")
             String style,
 
