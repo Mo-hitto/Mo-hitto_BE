@@ -23,6 +23,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -226,19 +227,23 @@ public class SimulationService {
 
         ChangeFaceRequest changeFaceRequest = new ChangeFaceRequest(user_image_url, modelImage.getUploadImageUrl());
 
-        Resource response = webClientFactory.create(fastapiProperties.hairTransfer()).post()
-                .uri("/simulate")
-                .accept(MediaType.IMAGE_PNG)
-                .accept(MediaType.IMAGE_JPEG)
-                .bodyValue(changeFaceRequest)
-                .retrieve()
-                .onStatus(HttpStatusCode::isError, clientResponse ->
-                        clientResponse.bodyToMono(String.class).flatMap(error ->
-                                Mono.error(new RuntimeException("시뮬레이션 모델 오류: " + error))
-                        )
+        Resource response = Mono.delay(Duration.ofSeconds(10)) // 10초 대기
+                .then(
+                        webClientFactory.create(fastapiProperties.hairTransfer())
+                                .post()
+                                .uri("/simulate")
+                                .accept(MediaType.IMAGE_PNG)
+                                .accept(MediaType.IMAGE_JPEG)
+                                .bodyValue(changeFaceRequest)
+                                .retrieve()
+                                .onStatus(HttpStatusCode::isError, clientResponse ->
+                                        clientResponse.bodyToMono(String.class).flatMap(error ->
+                                                Mono.error(new RuntimeException("시뮬레이션 모델 오류: " + error))
+                                        )
+                                )
+                                .bodyToMono(Resource.class)
                 )
-                .bodyToMono(Resource.class)
-                .block();
+                .block(); // 전체 실행
         log.info("시뮬레이션 모델 완료");
 
         MultipartFile file = convertResourceToMultipartFile(response);
