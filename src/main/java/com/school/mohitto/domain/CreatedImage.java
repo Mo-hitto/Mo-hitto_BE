@@ -1,15 +1,14 @@
 package com.school.mohitto.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "created_image")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class CreatedImage extends BaseTimeEntity {
 
     @Id
@@ -22,7 +21,7 @@ public class CreatedImage extends BaseTimeEntity {
     private Hair hair;
 
 
-    @Column(name = "url", length = 255)
+    @Column(name = "url", columnDefinition = "TEXT")
     private String createdImageUrl;
 
     @Builder

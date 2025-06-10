@@ -84,5 +84,15 @@ public class MypageController {
         DeletedSalonResponse response = new DeletedSalonResponse(salonId);
         return response;
     }
+
+    @GetMapping("/my-liked-images")
+    @Operation(summary = "마이페이지 - 좋아요 이미지 목록 조회")
+    public List<LikedImageResponse> getMyLikedImages(
+            @AuthUser AuthUserInfo authUserInfo
+    ) {
+        List<LikedImageResponse> likedImages = hairService.getLikedImagesByUser(authUserInfo.userId());
+        return likedImages;
+    }
+
 }
 
