@@ -7,6 +7,8 @@ import lombok.*;
 @Table(name = "created_image")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Builder
+@AllArgsConstructor
 public class CreatedImage extends BaseTimeEntity {
 
     @Id
@@ -19,7 +21,7 @@ public class CreatedImage extends BaseTimeEntity {
     private Hair hair;
 
 
-    @Column(name = "url", length = 255)
+    @Column(name = "url", columnDefinition = "TEXT")
     private String createdImageUrl;
 
     @Builder

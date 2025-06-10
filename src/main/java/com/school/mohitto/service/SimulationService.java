@@ -4,10 +4,7 @@ import com.school.mohitto.aws.s3.S3Uploader;
 import com.school.mohitto.config.WebClientFactory;
 import com.school.mohitto.domain.*;
 import com.school.mohitto.dto.requestDTO.*;
-import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
-import com.school.mohitto.dto.responseDTO.FaceExtractResponse;
-import com.school.mohitto.dto.responseDTO.FinalRecommandResponse;
-import com.school.mohitto.dto.responseDTO.RecommandResponse;
+import com.school.mohitto.dto.responseDTO.*;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.fastapi.FastapiProperties;
@@ -27,6 +24,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -297,5 +295,27 @@ public class SimulationService {
             );
         }
     }
+
+    @Transactional
+    public LikeToggleResponse toggleLike(Long hairId, String imageUrl) {
+        Optional<CreatedImage> existing = createdImageRepository.findByHairIdAndImageUrl(hairId, imageUrl);
+
+        if (existing.isPresent()) {
+            createdImageRepository.delete(existing.get());
+            return new LikeToggleResponse(hairId, imageUrl, false); // 좋아요 취소
+        } else {
+            Hair hair = hairRepository.findById(hairId)
+                    .orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
+
+            CreatedImage createdImage = CreatedImage.builder()
+                    .hair(hair)
+                    .createdImageUrl(imageUrl)
+                    .build();
+
+            createdImageRepository.save(createdImage);
+            return new LikeToggleResponse(hairId, imageUrl, true); // 좋아요 등록
+        }
+    }
+
 }
 

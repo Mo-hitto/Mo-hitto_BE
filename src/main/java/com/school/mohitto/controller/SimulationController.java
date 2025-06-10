@@ -5,7 +5,10 @@ import com.school.mohitto.dto.requestDTO.ChangeFaceSimulationRequest;
 import com.school.mohitto.dto.requestDTO.SimulationRequest;
 import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
 import com.school.mohitto.dto.responseDTO.FinalRecommandResponse;
+import com.school.mohitto.dto.responseDTO.LikeToggleResponse;
+import com.school.mohitto.dto.responseDTO.RecommandResponse;
 import com.school.mohitto.service.SimulationService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -46,4 +49,15 @@ public class SimulationController {
     ) throws IOException {
         return simulationService.changeFaceInSimulationService(multipartFile, modelImageId);
     }
+
+    @PostMapping("/like-toggle")
+    @Operation(summary = "좋아요 토글 (등록 또는 취소)")
+    public LikeToggleResponse toggleLike(
+            @RequestParam Long hairId,
+            @RequestParam String imageUrl
+    ) {
+        LikeToggleResponse response = simulationService.toggleLike(hairId, imageUrl);
+        return response;
+    }
+
 }
