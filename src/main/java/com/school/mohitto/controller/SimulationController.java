@@ -1,10 +1,10 @@
 package com.school.mohitto.controller;
 
+import com.school.mohitto.dto.requestDTO.ChangeFaceRecommandRequest;
 import com.school.mohitto.dto.requestDTO.ChangeFaceSimulationRequest;
 import com.school.mohitto.dto.requestDTO.SimulationRequest;
 import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
 import com.school.mohitto.dto.responseDTO.FinalRecommandResponse;
-import com.school.mohitto.dto.responseDTO.RecommandResponse;
 import com.school.mohitto.service.SimulationService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,13 @@ public class SimulationController {
             @RequestPart(value = "data") SimulationRequest simulationRequest
     ) throws IOException {
         return simulationService.extractFaceAndRecommand(multipartFile,simulationRequest);
+    }
+
+    @PostMapping(value = "/recommand/transfer-face")
+    public ChangeFaceSimulationResponse changeFaceInRecommandService(
+            @RequestBody ChangeFaceRecommandRequest changeFaceRecommandRequest
+    ) throws IOException {
+        return simulationService.changeFaceInRecommandService(changeFaceRecommandRequest);
     }
 
     @PostMapping(value = "/transfer-face", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

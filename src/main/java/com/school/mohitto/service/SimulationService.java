@@ -2,10 +2,7 @@ package com.school.mohitto.service;
 
 import com.school.mohitto.aws.s3.S3Uploader;
 import com.school.mohitto.config.WebClientFactory;
-import com.school.mohitto.domain.Diagnosis;
-import com.school.mohitto.domain.ModelImage;
-import com.school.mohitto.domain.Hair;
-import com.school.mohitto.domain.UploadImage;
+import com.school.mohitto.domain.*;
 import com.school.mohitto.dto.requestDTO.*;
 import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
 import com.school.mohitto.dto.responseDTO.FaceExtractResponse;
@@ -14,11 +11,8 @@ import com.school.mohitto.dto.responseDTO.RecommandResponse;
 import com.school.mohitto.exception.CustomException;
 import com.school.mohitto.exception.code.ErrorCode;
 import com.school.mohitto.fastapi.FastapiProperties;
-import com.school.mohitto.repository.DiagnosisRepository;
+import com.school.mohitto.repository.*;
 import com.school.mohitto.repository.DiagnosisRepositorys.*;
-import com.school.mohitto.repository.ModelImageRepository;
-import com.school.mohitto.repository.HairRepository;
-import com.school.mohitto.repository.UploadImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -52,6 +46,7 @@ public class SimulationService {
     private final DiagnosisRepository diagnosisRepository;
     private final UploadImageRepository uploadImageRepository;
     private final ModelImageRepository modelImageRepository;
+    private final CreatedImageRepository createdImageRepository;
 
     private final HairRepository hairRepository;
 
@@ -73,7 +68,6 @@ public class SimulationService {
         UploadImage image = new UploadImage(diagnosis, user_image_url);
         uploadImageRepository.save(image);
         log.info(user_image_url.toString());
-
 
         String hair_length = diagnosisHairLengthRepository.findByDiagnosisId(diagnosisId)
                 .orElseThrow(() -> new CustomException(ErrorCode.HAIR_LENGTH_NOT_FOUND))
@@ -199,7 +193,6 @@ public class SimulationService {
                 recommendation ->
                 {
                     ModelImage modelImage = modelImageRepository.findModelImageByDiagnosisFeature(diagnosis,recommendation.style());
-                    // log.info(modelImage.getName());
                     Hair hair = Hair.builder()
                             .name(recommendation.style())
                             .explanation(recommendation.description())
@@ -217,14 +210,18 @@ public class SimulationService {
                             recommendation.hair_shops());
                 }
         ).collect(Collectors.toList());
-
+        log.info("Rag 모델 완료");
         return new FinalRecommandResponse(result);
     }
 
-    public ChangeFaceSimulationResponse changeFaceInSimulationService(
-            MultipartFile multipartFile,
-            ChangeFaceSimulationRequest inputFaceRequest) throws IOException {
-        String user_image_url = s3Uploader.upload(multipartFile, "face");
+    @Transactional
+    public ChangeFaceSimulationResponse changeFaceInRecommandService(
+            ChangeFaceRecommandRequest inputFaceRequest ) throws IOException {
+
+        Hair hair = hairRepository.findById(inputFaceRequest.hairId()).orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
+
+        String user_image_url = hair.getDiagnosis().getUploadImage().getUploadImageUrl();
+        log.info("추천 헤어 적용 전 이미지 사진: " + user_image_url);
 
         ModelImage modelImage = modelImageRepository.findById(inputFaceRequest.modelImageId())
                 .orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
@@ -244,9 +241,46 @@ public class SimulationService {
                 )
                 .bodyToMono(Resource.class)
                 .block();
+        log.info("시뮬레이션 모델 완료");
 
         MultipartFile file = convertResourceToMultipartFile(response);
         String result_image_url = s3Uploader.upload(file, "result");
+        log.info("추천 헤어 시뮬레이션 결과 이미지: " + result_image_url);
+
+        createdImageRepository.save(new CreatedImage(hair,result_image_url));
+
+        return new ChangeFaceSimulationResponse(result_image_url);
+    }
+
+    public ChangeFaceSimulationResponse changeFaceInSimulationService(
+            MultipartFile multipartFile,
+            ChangeFaceSimulationRequest inputFaceRequest) throws IOException {
+        String user_image_url = s3Uploader.upload(multipartFile, "face");
+        log.info(user_image_url);
+
+        ModelImage modelImage = modelImageRepository.findById(inputFaceRequest.modelImageId())
+                .orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
+
+        ChangeFaceRequest changeFaceRequest = new ChangeFaceRequest(user_image_url, modelImage.getUploadImageUrl());
+
+        Resource response = webClientFactory.create(fastapiProperties.hairTransfer()).post()
+                .uri("/simulate")
+                .accept(MediaType.IMAGE_PNG)
+                .accept(MediaType.IMAGE_JPEG)
+                .bodyValue(changeFaceRequest)
+                .retrieve()
+                .onStatus(HttpStatusCode::isError, clientResponse ->
+                        clientResponse.bodyToMono(String.class).flatMap(error ->
+                                Mono.error(new RuntimeException("시뮬레이션 모델 오류: " + error))
+                        )
+                )
+                .bodyToMono(Resource.class)
+                .block();
+        log.info("시뮬레이션 완료");
+
+        MultipartFile file = convertResourceToMultipartFile(response);
+        String result_image_url = s3Uploader.upload(file, "result");
+        log.info("시뮬레이션 서비스에서의 이미지 결과 : " + result_image_url);
         return new ChangeFaceSimulationResponse(result_image_url);
     }
 
