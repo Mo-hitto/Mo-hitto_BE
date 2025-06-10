@@ -1,10 +1,7 @@
 package com.school.mohitto.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "created_image")
@@ -27,6 +24,11 @@ public class CreatedImage extends BaseTimeEntity {
 
     @Builder
     public CreatedImage(String createdImageUrl) {
+        this.createdImageUrl = createdImageUrl;
+    }
+
+    public CreatedImage(Hair hair, String createdImageUrl) {
+        this.hair = hair;
         this.createdImageUrl = createdImageUrl;
     }
 }
