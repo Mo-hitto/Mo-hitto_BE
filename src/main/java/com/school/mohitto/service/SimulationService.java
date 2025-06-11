@@ -313,13 +313,13 @@ public class SimulationService {
                     .orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
 
             CreatedImage createdImage = CreatedImage.builder()
-                    .hair(hair)
                     .createdImageUrl(imageUrl)
                     .build();
 
             hair.setCreatedImage(createdImage);
+            createdImage.setHair(hair);
 
-            createdImageRepository.save(createdImage);
+            hairRepository.save(hair);
             return new LikeToggleResponse(hairId, imageUrl, true); // 좋아요 등록
         }
     }
