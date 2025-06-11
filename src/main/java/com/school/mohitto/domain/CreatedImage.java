@@ -28,4 +28,9 @@ public class CreatedImage extends BaseTimeEntity {
     public CreatedImage(String createdImageUrl) {
         this.createdImageUrl = createdImageUrl;
     }
+
+    public CreatedImage(Hair hair, String createdImageUrl) {
+        this.hair = hair;
+        this.createdImageUrl = createdImageUrl;
+    }
 }
