@@ -317,6 +317,8 @@ public class SimulationService {
                     .createdImageUrl(imageUrl)
                     .build();
 
+            hair.setCreatedImage(createdImage);
+
             createdImageRepository.save(createdImage);
             return new LikeToggleResponse(hairId, imageUrl, true); // 좋아요 등록
         }

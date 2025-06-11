@@ -49,6 +49,16 @@ public class Hair extends BaseTimeEntity{
         this.isLiked = isLiked;
     }
 
+    public void setCreatedImage(CreatedImage createdImage) {
+        this.createdImage = createdImage;
+
+        // 양방향 연관관계 유지
+        if (createdImage != null && createdImage.getHair() != this) {
+            createdImage.setHair(this);
+        }
+    }
+
+
 
     @Builder
     public Hair(String name, String explanation, Boolean isLiked, Diagnosis diagnosis, ModelImage modelImage) {

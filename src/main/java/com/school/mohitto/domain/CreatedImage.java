@@ -33,4 +33,8 @@ public class CreatedImage extends BaseTimeEntity {
         this.hair = hair;
         this.createdImageUrl = createdImageUrl;
     }
+
+    public void setHair(Hair hair) {
+        this.hair = hair;
+    }
 }
