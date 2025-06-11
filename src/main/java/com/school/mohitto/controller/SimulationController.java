@@ -2,6 +2,7 @@ package com.school.mohitto.controller;
 
 import com.school.mohitto.dto.requestDTO.ChangeFaceRecommandRequest;
 import com.school.mohitto.dto.requestDTO.ChangeFaceSimulationRequest;
+import com.school.mohitto.dto.requestDTO.LikeToggleRequest;
 import com.school.mohitto.dto.requestDTO.SimulationRequest;
 import com.school.mohitto.dto.responseDTO.ChangeFaceSimulationResponse;
 import com.school.mohitto.dto.responseDTO.FinalRecommandResponse;
@@ -52,11 +53,8 @@ public class SimulationController {
 
     @PostMapping("/like-toggle")
     @Operation(summary = "좋아요 토글 (등록 또는 취소)")
-    public LikeToggleResponse toggleLike(
-            @RequestParam Long hairId,
-            @RequestParam String imageUrl
-    ) {
-        LikeToggleResponse response = simulationService.toggleLike(hairId, imageUrl);
+    public LikeToggleResponse toggleLike(@RequestBody LikeToggleRequest request) {
+        LikeToggleResponse response =  simulationService.toggleLike(request.hairId(), request.imageUrl());
         return response;
     }
 
