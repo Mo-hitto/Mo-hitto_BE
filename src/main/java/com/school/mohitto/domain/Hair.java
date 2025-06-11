@@ -42,12 +42,22 @@ public class Hair extends BaseTimeEntity{
     @JoinColumn(name = "model_image_id")
     private ModelImage modelImage;
 
-    @OneToOne(mappedBy = "hair", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "hair", cascade = CascadeType.ALL, orphanRemoval = true)
     private CreatedImage createdImage;
 
     public void updateLike(boolean isLiked) {
         this.isLiked = isLiked;
     }
+
+    public void setCreatedImage(CreatedImage createdImage) {
+        this.createdImage = createdImage;
+
+        // 양방향 연관관계 유지
+        if (createdImage != null && createdImage.getHair() != this) {
+            createdImage.setHair(this);
+        }
+    }
+
 
 
     @Builder

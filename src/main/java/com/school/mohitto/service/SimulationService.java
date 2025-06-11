@@ -306,18 +306,23 @@ public class SimulationService {
         Optional<CreatedImage> existing = createdImageRepository.findByHairIdAndImageUrl(hairId, imageUrl);
 
         if (existing.isPresent()) {
+            Hair hair = existing.get().getHair();
+            hair.setCreatedImage(null); // 연관 관계 끊기
             createdImageRepository.delete(existing.get());
-            return new LikeToggleResponse(hairId, imageUrl, false); // 좋아요 취소
+            createdImageRepository.flush(); // 즉시 반영
+            return new LikeToggleResponse(hairId, imageUrl, false);
         } else {
             Hair hair = hairRepository.findById(hairId)
                     .orElseThrow(() -> new CustomException(ErrorCode.HAIR_NOT_FOUND));
 
             CreatedImage createdImage = CreatedImage.builder()
-                    .hair(hair)
                     .createdImageUrl(imageUrl)
                     .build();
 
-            createdImageRepository.save(createdImage);
+            hair.setCreatedImage(createdImage);
+            createdImage.setHair(hair);
+
+            hairRepository.save(hair);
             return new LikeToggleResponse(hairId, imageUrl, true); // 좋아요 등록
         }
     }

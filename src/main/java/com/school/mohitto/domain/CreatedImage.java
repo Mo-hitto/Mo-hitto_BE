@@ -24,13 +24,13 @@ public class CreatedImage extends BaseTimeEntity {
     @Column(name = "url", columnDefinition = "TEXT")
     private String createdImageUrl;
 
-    @Builder
-    public CreatedImage(String createdImageUrl) {
-        this.createdImageUrl = createdImageUrl;
-    }
 
     public CreatedImage(Hair hair, String createdImageUrl) {
         this.hair = hair;
         this.createdImageUrl = createdImageUrl;
+    }
+
+    public void setHair(Hair hair) {
+        this.hair = hair;
     }
 }
