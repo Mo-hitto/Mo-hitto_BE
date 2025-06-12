@@ -56,7 +56,8 @@ public class HairService {
                 .map(ci -> new LikedImageResponse(
                         ci.getId(),
                         ci.getCreatedImageUrl(),
-                        ci.getHair().getName()
+                        ci.getHair().getName(),
+                        ci.getHair().getId()
                 ))
                 .collect(Collectors.toList());
     }
