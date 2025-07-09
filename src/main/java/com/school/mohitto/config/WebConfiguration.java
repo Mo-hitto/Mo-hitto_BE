@@ -32,7 +32,8 @@ public class WebConfiguration implements WebMvcConfigurer {
                 .excludePathPatterns("/swagger-ui.html")
                 .excludePathPatterns("/v3/api-docs/**")
                 .excludePathPatterns("/favicon.ico", "/error")
-                .excludePathPatterns("/oauth2/**");
+                .excludePathPatterns("/oauth2/**")
+                .excludePathPatterns("/health_check");
     }
 
     @Override
